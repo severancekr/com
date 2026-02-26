@@ -9,18 +9,21 @@
     /* 신뢰감 가는 프리미엄 테마 컬러 */
     :root { --primary-color: #006670; --secondary-color: #008489; --accent-color: #e6f7f8; --text-color: #2c3e50; --input-border: #cbd5e1; --white: #ffffff; --danger-color: #e74c3c; }
     
-    /* ★ 요청하신 새로운 배경 이미지로 변경 완료 ★ */
-    body, html { margin: 0; padding: 0; height: 100%; font-family: 'Pretendard', sans-serif; background-image: url('https://www.whosaeng.com/imgdata/whosaeng_com/202211/2022112932303587.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-color); display: flex; justify-content: center; align-items: center; }
+    body, html { margin: 0; padding: 0; height: 100%; font-family: 'Pretendard', sans-serif; background-image: url('https://ksnnews.or.kr/news/data/2025/03/11/p1065595035371594_319_thum.png'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-color); display: flex; justify-content: center; align-items: center; }
     
-    /* 메인 앱 컨테이너 (고급스러운 유리질감 & 곡선) */
+    /* 메인 앱 컨테이너 */
     .app-container { width: 100%; max-width: 420px; height: 95vh; margin: 10px; background-color: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 24px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); overflow: hidden; display: flex; flex-direction: column; position: relative; border: 1px solid rgba(255,255,255,0.5); }
     
     .screen { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 30px 25px; box-sizing: border-box; }
     .screen.active { display: block; animation: fadeSlideUp 0.4s ease-out; }
     @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* ★ 로고 영역 (원형 틀, 중앙 정렬) ★ */
+    .logo-wrapper { width: 80px; height: 80px; margin: 0 auto 15px auto; background-color: var(--white); border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; border: 2px solid var(--accent-color); }
+    .logo-wrapper img { width: 65%; height: auto; object-fit: contain; }
+
     /* 프리미엄 홈 메뉴 UI */
-    .home-header { text-align: center; margin-bottom: 35px; margin-top: 15px; }
+    .home-header { text-align: center; margin-bottom: 35px; margin-top: 10px; }
     .home-header h1 { color: var(--primary-color); font-size: 26px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.5px; }
     .home-header p { color: #64748b; font-size: 14px; margin: 0; font-weight: 500; }
     
@@ -33,11 +36,15 @@
     .menu-text h3 { margin: 0 0 4px 0; color: var(--text-color); font-size: 18px; font-weight: 700; }
     .menu-text p { margin: 0; color: #64748b; font-size: 13px; font-weight: 500; }
 
-    /* 서브 폼 화면 스타일 */
-    .back-btn { background: #f1f5f9; border: none; color: #475569; font-size: 14px; font-weight: 700; cursor: pointer; padding: 8px 16px; border-radius: 20px; margin-bottom: 25px; display: inline-flex; align-items: center; transition: 0.2s; }
-    .back-btn:hover { background: #e2e8f0; color: var(--primary-color); }
+    /* ★ 강화된 '처음 돌아가기' 버튼 ★ */
+    .back-btn { background: var(--secondary-color); color: var(--white); border: none; font-size: 15px; font-weight: 700; cursor: pointer; padding: 12px 20px; border-radius: 25px; margin-bottom: 25px; display: inline-flex; align-items: center; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0, 132, 137, 0.25); }
+    .back-btn:hover { background: var(--primary-color); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0, 102, 112, 0.3); }
+    .back-btn:active { transform: translateY(0); }
+    .back-icon { margin-right: 6px; width: 18px; height: 18px; }
+
     .form-header h2 { color: var(--primary-color); margin: 0 0 25px 0; font-size: 22px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
     
+    /* 폼 요소 스타일 */
     .form-group { margin-bottom: 22px; }
     label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px; color: #334155; }
     .required::after { content: "*"; color: var(--danger-color); margin-left: 4px; }
@@ -64,6 +71,9 @@
 
     <div id="homeScreen" class="screen active">
       <div class="home-header">
+        <div class="logo-wrapper">
+          <img src="https://s-tec.co.kr/images/icon/cyber_03_01.png" alt="로고">
+        </div>
         <h1>통합 업무 시스템</h1>
         <p>정확하고 신속한 스마트 보고 채널</p>
       </div>
@@ -96,7 +106,9 @@
     </div>
 
     <div id="form1Screen" class="screen">
-      <button class="back-btn" onclick="showScreen('homeScreen')">◀ 메인으로</button>
+      <button class="back-btn" onclick="showScreen('homeScreen')">
+        <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> 처음 돌아가기
+      </button>
       <div class="form-header"><h2>상황 보고 작성</h2></div>
       
       <form id="reportForm">
@@ -124,7 +136,9 @@
         </div>
 
         <div class="form-group"><label class="required">4. 근무자</label><input type="text" id="worker1" class="sync-worker" placeholder="예) 홍길동 외 1명" required></div>
-        <div class="form-group"><label class="required">5. 사고자</label><input type="text" id="patientInput" placeholder="예) 김철수(69/남)" required></div>
+        
+        <div class="form-group"><label class="required">5. 사고자</label><input type="text" id="patientInput" placeholder="예) 김OO(69/남)" required></div>
+        
         <div class="form-group"><label class="required">6. 조치결과</label><textarea id="resultInput" placeholder="조치하신 결과를 상세히 적어주세요." required></textarea></div>
         
         <div class="form-group">
@@ -142,7 +156,9 @@
     </div>
 
     <div id="form2Screen" class="screen">
-      <button class="back-btn" onclick="showScreen('homeScreen')">◀ 메인으로</button>
+      <button class="back-btn" onclick="showScreen('homeScreen')">
+        <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> 처음 돌아가기
+      </button>
       <div class="form-header"><h2>미시건 및 소등 점검</h2></div>
       
       <form id="form2">
@@ -158,7 +174,9 @@
     </div>
 
     <div id="form3Screen" class="screen">
-      <button class="back-btn" onclick="showScreen('homeScreen')">◀ 메인으로</button>
+      <button class="back-btn" onclick="showScreen('homeScreen')">
+        <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> 처음 돌아가기
+      </button>
       <div class="form-header"><h2>작업 현황 보고</h2></div>
       
       <form id="form3">
@@ -176,18 +194,30 @@
   </div>
 
   <script>
-    // ★ 기존에 잘 작동하던 앱스 스크립트 '웹 앱 URL'을 이곳에 다시 붙여넣어 주세요!
+    // ★ 실장님의 스크립트 코드가 고정으로 삽입되었습니다. ★
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxK9_OtEHMpThIjXP6bUwi5j_cEMoFN9tDsd69qavXceqnq8fxWzJruMYpreuk8dUMS7A/exec';
     
     let lastUuid1 = null; let lastUuid2 = null; let lastUuid3 = null;
-    const kstOffset = 9 * 60;
 
+    // 9시간 더하는 오류 수정: 브라우저 기본 로컬 시간(한국 시간)을 그대로 사용합니다.
     function getFormattedDate() {
-      const now = new Date(); now.setMinutes(now.getMinutes() + kstOffset);
+      const now = new Date(); 
       return `${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}(${['일','월','화','수','목','금','토'][now.getDay()]})`;
     }
-    function getCurrentTime() { const d = new Date(); d.setMinutes(d.getMinutes() + kstOffset); return d.toISOString().split('T')[1].substring(0,5); }
-    function getEndTime() { const d = new Date(); d.setMinutes(d.getMinutes() + kstOffset + 15); return d.toISOString().split('T')[1].substring(0,5); }
+    
+    function formatTime(d) {
+      return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    }
+    
+    function getCurrentTime() { 
+      return formatTime(new Date()); 
+    }
+    
+    function getEndTime() { 
+      const d = new Date(); 
+      d.setMinutes(d.getMinutes() + 15); 
+      return formatTime(d); 
+    }
 
     function showScreen(screenId) {
       document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
