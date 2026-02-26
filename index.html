@@ -3,217 +3,289 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>업무 상황 보고 시스템</title>
+  <title>통합 업무 관리 시스템</title>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <style>
-    :root { --primary-color: #008489; --secondary-color: #005c61; --text-color: #333333; --input-border: #d1dce5; --white: #ffffff; --danger-color: #e74c3c; }
-    body, html { margin: 0; padding: 0; height: 100%; font-family: 'Pretendard', sans-serif; background-image: url('https://ksnnews.or.kr/news/data/2025/03/11/p1065595035371594_319_thum.png'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; color: var(--text-color); display: flex; justify-content: center; align-items: center; }
-    .container { width: 100%; max-width: 420px; margin: 20px; background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 30px 25px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); box-sizing: border-box; max-height: 95vh; overflow-y: auto; }
-    .header { text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid rgba(0, 0, 0, 0.05); }
-    .header h1 { margin: 0; font-size: 22px; color: var(--primary-color); font-weight: 700; }
-    .header p { margin: 8px 0 0; font-size: 14px; color: #333; font-weight: 500;}
+    :root { --primary-color: #008489; --secondary-color: #005c61; --text-color: #333333; --input-border: #d1dce5; --white: #ffffff; --bg-gray: #f4f7f9; }
+    body, html { margin: 0; padding: 0; height: 100%; font-family: 'Pretendard', sans-serif; background-image: url('https://ksnnews.or.kr/news/data/2025/03/11/p1065595035371594_319_thum.png'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-color); display: flex; justify-content: center; align-items: center; }
+    
+    /* 앱 화면 컨테이너 */
+    .app-container { width: 100%; max-width: 420px; height: 95vh; margin: 10px; background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); overflow: hidden; display: flex; flex-direction: column; position: relative; }
+    
+    /* 화면 전환용 클래스 */
+    .screen { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 25px; box-sizing: border-box; }
+    .screen.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* 홈 화면(메뉴) 스타일 */
+    .home-header { text-align: center; margin-bottom: 40px; margin-top: 20px; }
+    .home-header h1 { color: var(--primary-color); font-size: 24px; margin: 0 0 10px 0; }
+    .menu-btn { width: 100%; background-color: var(--white); border: 2px solid var(--primary-color); border-radius: 12px; padding: 20px; margin-bottom: 15px; font-size: 18px; font-weight: 700; color: var(--primary-color); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    .menu-btn:hover { background-color: var(--primary-color); color: var(--white); }
+    
+    /* 서브 폼 화면 스타일 */
+    .back-btn { background: none; border: none; color: #555; font-size: 16px; font-weight: 600; cursor: pointer; padding: 0; margin-bottom: 20px; display: flex; align-items: center; }
+    .form-header h2 { color: var(--primary-color); margin: 0 0 20px 0; font-size: 20px; border-bottom: 2px solid rgba(0,0,0,0.05); padding-bottom: 15px; }
+    
     .form-group { margin-bottom: 20px; }
-    label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: var(--text-color); }
-    .required::after { content: "*"; color: var(--danger-color); margin-left: 4px; }
-    .time-flex { display: flex; align-items: center; gap: 10px; }
-    input[type="date"], input[type="time"], input[type="text"], select, textarea, input[type="file"] { width: 100%; padding: 12px; border: 1px solid var(--input-border); border-radius: 8px; box-sizing: border-box; font-size: 15px; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; background-color: rgba(255, 255, 255, 0.9); -webkit-appearance: none; }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 132, 137, 0.1); }
+    label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
+    input[type="text"], select, textarea, input[type="file"] { width: 100%; padding: 12px; border: 1px solid var(--input-border); border-radius: 8px; box-sizing: border-box; font-size: 15px; font-family: inherit; background-color: var(--white); -webkit-appearance: none; }
+    input[readonly] { background-color: #f0f0f0; color: #555; font-weight: bold; } /* 자동입력 날짜칸 */
     textarea { resize: none; height: 100px; }
-    .submit-btn { width: 100%; padding: 14px; background-color: var(--primary-color); color: var(--white); border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-    .submit-btn:hover { background-color: var(--secondary-color); }
-    .undo-btn { width: 100%; padding: 12px; background-color: var(--white); color: var(--danger-color); border: 1px solid var(--danger-color); border-radius: 8px; font-size: 14px; font-weight: 700; margin-top: 15px; cursor: pointer; display: none; transition: 0.3s; }
-    .undo-btn:hover { background-color: #fdf0ed; }
-    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 10; display: none; justify-content: center; align-items: center; flex-direction: column; }
+    .submit-btn { width: 100%; padding: 14px; background-color: var(--primary-color); color: var(--white); border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+    .undo-btn { width: 100%; padding: 12px; background-color: var(--white); color: var(--danger-color); border: 1px solid var(--danger-color); border-radius: 8px; font-size: 14px; font-weight: 700; margin-top: 15px; cursor: pointer; display: none; }
+
+    .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 100; display: none; justify-content: center; align-items: center; flex-direction: column; }
     .spinner { border: 4px solid rgba(0, 132, 137, 0.1); width: 40px; height: 40px; border-radius: 50%; border-left-color: var(--primary-color); animation: spin 1s linear infinite; margin-bottom: 10px; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
-  <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p style="color: #008489; font-weight: 600;">데이터를 전송 중입니다...</p></div>
+  <div class="app-container">
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p style="color: #008489; font-weight: 600;">데이터 전송 중...</p></div>
 
-  <div class="container">
-    <div class="header">
-      <h1>업무 상황 보고</h1>
-      <p>정확하고 신속한 정보 공유를 위해 작성해주세요.</p>
+    <div id="homeScreen" class="screen active">
+      <div class="home-header">
+        <h1>통합 업무 시스템</h1>
+        <p style="color:#666; font-size:14px;">원하시는 업무를 선택해 주세요.</p>
+      </div>
+      <button class="menu-btn" onclick="showScreen('form1Screen')">📋 상황 보고</button>
+      <button class="menu-btn" onclick="showScreen('form2Screen')">🔦 미시건 및 소등</button>
+      <button class="menu-btn" onclick="showScreen('form3Screen')">🛠️ 작업 현황</button>
     </div>
-    
-    <form id="reportForm">
-      <div class="form-group"><label for="reporterName" class="required">보고자 이름</label><input type="text" id="reporterName" placeholder="이름을 입력해주세요." required></div>
-      <div class="form-group"><label for="date" class="required">날짜</label><input type="date" id="date" required></div>
-      <div class="form-group">
-        <label class="required">업무 시간 (시작 ~ 종료)</label>
-        <div class="time-flex"><input type="time" id="startTime" required><span>~</span><input type="time" id="endTime" required></div>
-      </div>
-      <div class="form-group">
-        <label for="category" class="required">상황 구분</label>
-        <select id="category" required>
-          <option value="" disabled selected>선택해주세요</option>
-          <option value="상황지원">상황지원</option><option value="원내동행">원내동행</option>
-          <option value="병동지원">병동지원</option><option value="업무지원">업무지원</option>
-          <option value="직접입력">직접입력</option>
-        </select>
-        <input type="text" id="customCategory" placeholder="상황을 직접 입력해주세요." style="display: none; margin-top: 10px;">
-      </div>
-      <div class="form-group"><label for="content" class="required">보고 내용</label><textarea id="content" placeholder="상세 내용을 입력해주세요." required></textarea></div>
-      <div class="form-group">
-        <label for="photo">사진 첨부 (선택)</label>
-        <input type="file" id="photo" accept="image/*">
-        <p style="font-size: 12px; color: #555; margin-top: 5px;">* 카메라 사용 시 화면이 새로고침 되어도 작성 중인 내용은 복구됩니다.</p>
-      </div>
-      <button type="submit" class="submit-btn" id="submitBtn">보고 제출하기</button>
-      <button type="button" class="undo-btn" id="undoBtn">방금 제출한 내용 삭제하기</button>
-    </form>
+
+    <div id="form1Screen" class="screen">
+      <button class="back-btn" onclick="showScreen('homeScreen')">◀ 뒤로 가기</button>
+      <div class="form-header"><h2>상황 보고 작성</h2></div>
+      
+      <form id="reportForm">
+        <div class="form-group">
+          <label>1. 날짜 (자동입력)</label>
+          <input type="text" id="dateDisplay" readonly>
+        </div>
+
+        <div class="form-group">
+          <label>2. 유형</label>
+          <select id="typeSelect" required>
+            <option value="" disabled selected>선택해주세요</option>
+            <option value="외래">외래</option><option value="병동">병동</option>
+            <option value="외부">외부</option><option value="직접입력">직접입력</option>
+          </select>
+          <input type="text" id="customType" placeholder="유형 직접 입력" style="display:none; margin-top:8px;">
+        </div>
+
+        <div class="form-group">
+          <label>3. 예방내역</label>
+          <select id="preventionSelect" required>
+            <option value="" disabled selected>선택해주세요</option>
+            <option value="환자동행">환자동행</option><option value="상황출동">상황출동</option>
+            <option value="환자이탈">환자이탈</option><option value="고인이송">고인이송</option>
+            <option value="채혈지원">채혈지원</option><option value="직접입력">직접입력</option>
+          </select>
+          <input type="text" id="customPrevention" placeholder="예방내역 직접 입력" style="display:none; margin-top:8px;">
+        </div>
+
+        <div class="form-group">
+          <label>4. 근무자</label>
+          <input type="text" id="workerInput" placeholder="예) 홍길동 외 1명" required>
+        </div>
+
+        <div class="form-group">
+          <label>5. 사고자</label>
+          <input type="text" id="patientInput" placeholder="예) 김철수(69/남)" required>
+        </div>
+
+        <div class="form-group">
+          <label>6. 조치결과</label>
+          <textarea id="resultInput" placeholder="조치하신 결과를 상세히 적어주세요." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>7. 사진 첨부 (선택)</label>
+          <input type="file" id="photo1" accept="image/*">
+        </div>
+
+        <button type="submit" class="submit-btn">보고 제출하기</button>
+        <button type="button" class="undo-btn" id="undoBtn1">방금 제출한 내용 삭제</button>
+      </form>
+    </div>
+
+    <div id="form2Screen" class="screen">
+      <button class="back-btn" onclick="showScreen('homeScreen')">◀ 뒤로 가기</button>
+      <div class="form-header"><h2>미시건 및 소등 점검</h2></div>
+      <form id="form2">
+        <div class="form-group"><label>점검 내용</label><textarea id="content2" placeholder="점검 내용을 입력해주세요." required></textarea></div>
+        <div class="form-group"><label>사진 첨부</label><input type="file" id="photo2" accept="image/*"></div>
+        <button type="submit" class="submit-btn">점검 제출하기</button>
+        <button type="button" class="undo-btn" id="undoBtn2">방금 제출한 내용 삭제</button>
+      </form>
+    </div>
+
+    <div id="form3Screen" class="screen">
+      <button class="back-btn" onclick="showScreen('homeScreen')">◀ 뒤로 가기</button>
+      <div class="form-header"><h2>작업 현황 보고</h2></div>
+      <form id="form3">
+        <div class="form-group"><label>작업 내용</label><textarea id="content3" placeholder="현황 내용을 입력해주세요." required></textarea></div>
+        <div class="form-group"><label>사진 첨부</label><input type="file" id="photo3" accept="image/*"></div>
+        <button type="submit" class="submit-btn">현황 제출하기</button>
+        <button type="button" class="undo-btn" id="undoBtn3">방금 제출한 내용 삭제</button>
+      </form>
+    </div>
+
   </div>
 
   <script>
-    // ★ 중요: 반드시 새 버전으로 배포한 새로운 앱스 스크립트 웹 앱 URL을 넣으세요!
+    // ★ 주의: 앱스 스크립트 웹 앱 URL을 붙여넣으세요.
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxK9_OtEHMpThIjXP6bUwi5j_cEMoFN9tDsd69qavXceqnq8fxWzJruMYpreuk8dUMS7A/exec';
     
-    let lastSubmittedUuid = null; 
+    // UUID (삭제용)
+    let lastUuid1 = null; let lastUuid2 = null; let lastUuid3 = null;
 
-    const now = new Date();
-    const kstOffset = 9 * 60;
-    now.setMinutes(now.getMinutes() + kstOffset);
-    const defaultDate = now.toISOString().split('T')[0];
-    const defaultStartTime = now.toISOString().split('T')[1].substring(0, 5);
-    const endDate = new Date(now.getTime() + 15 * 60000);
-    const defaultEndTime = endDate.toISOString().split('T')[1].substring(0, 5);
+    // 날짜 포맷팅: MM/DD(요일) - 예: 02/26(목)
+    function getFormattedDate() {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + (9 * 60)); // KST 보정
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const date = String(now.getDate()).padStart(2, '0');
+      const days = ['일','월','화','수','목','금','토'];
+      const day = days[now.getDay()];
+      return `${month}/${date}(${day})`;
+    }
 
-    const formFields = ['reporterName', 'date', 'startTime', 'endTime', 'category', 'customCategory', 'content'];
+    // 앱 화면 전환 함수
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+    }
 
-    // [자동 복구 기능] 화면이 켜질 때 저장된 데이터가 있으면 불러오기
+    // 초기 세팅
     window.addEventListener('load', () => {
-      document.getElementById('date').value = defaultDate;
-      document.getElementById('startTime').value = defaultStartTime;
-      document.getElementById('endTime').value = defaultEndTime;
-
-      formFields.forEach(id => {
-        const savedData = localStorage.getItem('autosave_' + id);
-        if (savedData) { document.getElementById(id).value = savedData; }
-      });
-
-      if (document.getElementById('category').value === '직접입력') {
-        document.getElementById('customCategory').style.display = 'block';
-        document.getElementById('customCategory').required = true;
-      }
-    });
-
-    // [자동 저장 기능] 글자를 칠 때마다 스마트폰에 몰래 임시 저장
-    formFields.forEach(id => {
-      document.getElementById(id).addEventListener('input', function() {
-        localStorage.setItem('autosave_' + id, this.value);
-      });
-    });
-
-    const form = document.getElementById('reportForm');
-    const categorySelect = document.getElementById('category');
-    const customCategoryInput = document.getElementById('customCategory');
-
-    categorySelect.addEventListener('change', function() {
-      if (this.value === '직접입력') {
-        customCategoryInput.style.display = 'block';
-        customCategoryInput.required = true;
-      } else {
-        customCategoryInput.style.display = 'none';
-        customCategoryInput.required = false;
-        customCategoryInput.value = '';
-        localStorage.removeItem('autosave_customCategory');
-      }
-    });
-
-    function generateUUID() { return Date.now().toString(36) + Math.random().toString(36).substring(2); }
-    function getDayOfWeek(dateString) { return ['일', '월', '화', '수', '목', '금', '토'][new Date(dateString).getDay()]; }
-
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      document.getElementById('loadingOverlay').style.display = 'flex';
-      document.getElementById('submitBtn').disabled = true;
-
-      lastSubmittedUuid = generateUUID();
-      const rawDate = document.getElementById('date').value;
+      document.getElementById('dateDisplay').value = getFormattedDate();
       
-      let finalCategory = categorySelect.value;
-      if (finalCategory === '직접입력') finalCategory = customCategoryInput.value;
+      // 자동 복구 (근무자 이름만 기억하도록 세팅)
+      const savedWorker = localStorage.getItem('autosave_worker');
+      if(savedWorker) document.getElementById('workerInput').value = savedWorker;
+    });
 
-      const submitData = {
-        action: 'insert',
-        uuid: lastSubmittedUuid,
-        date: `${rawDate} (${getDayOfWeek(rawDate)})`,
-        time: `${document.getElementById('startTime').value}~${document.getElementById('endTime').value}`,
-        reporter: document.getElementById('reporterName').value,
-        category: finalCategory,
-        content: document.getElementById('content').value,
-        fileData: null,
-        fileName: null
-      };
+    // 드롭다운 '직접입력' 이벤트 처리
+    function handleDirectInput(selectId, inputId) {
+      const select = document.getElementById(selectId);
+      const input = document.getElementById(inputId);
+      select.addEventListener('change', function() {
+        if(this.value === '직접입력') { input.style.display = 'block'; input.required = true; } 
+        else { input.style.display = 'none'; input.required = false; input.value = ''; }
+      });
+    }
+    handleDirectInput('typeSelect', 'customType');
+    handleDirectInput('preventionSelect', 'customPrevention');
 
+    // 공통 제출 함수 (어느 시트로 보낼지 sheetName 으로 결정)
+    async function submitForm(formId, sheetName, dataObj, photoInputId, undoBtnId) {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      
+      const fileInput = document.getElementById(photoInputId);
+      
       const handleFile = () => {
-        return new Promise((resolve, reject) => {
-          const file = document.getElementById('photo').files[0];
+        return new Promise((resolve) => {
+          const file = fileInput.files[0];
           if (!file) { resolve(); return; }
-
           const reader = new FileReader();
-          reader.onload = function(event) {
+          reader.onload = function(e) {
             const img = new Image();
             img.onload = function() {
               const canvas = document.createElement('canvas');
-              let width = img.width; let height = img.height;
-              if (width > 1024) { height = Math.round((height *= 1024 / width)); width = 1024; }
-              canvas.width = width; canvas.height = height;
-              canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-              submitData.fileData = canvas.toDataURL('image/jpeg', 0.8);
-              submitData.fileName = file.name;
+              let w = img.width, h = img.height;
+              if (w > 1024) { h = Math.round(h * 1024 / w); w = 1024; }
+              canvas.width = w; canvas.height = h;
+              canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+              dataObj.fileData = canvas.toDataURL('image/jpeg', 0.8);
+              dataObj.fileName = file.name;
               resolve();
             };
-            img.src = event.target.result;
+            img.src = e.target.result;
           };
           reader.readAsDataURL(file);
         });
       };
 
       try {
-        await handleFile(); 
-        await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(submitData) });
-
-        alert('보고가 성공적으로 제출되었습니다.');
-        
-        // 전송 성공 시 임시 저장소 비우기 (이름은 다음을 위해 남겨둠)
-        formFields.forEach(id => {
-          if (id !== 'reporterName') {
-            localStorage.removeItem('autosave_' + id);
-            document.getElementById(id).value = '';
-          }
-        });
-        
-        document.getElementById('photo').value = ''; 
-        if(categorySelect.value === '직접입력') { categorySelect.value = ''; customCategoryInput.style.display = 'none'; }
-        
-        // 시간은 다시 현재 시간으로 리셋
-        const resetNow = new Date(); resetNow.setMinutes(resetNow.getMinutes() + kstOffset);
-        document.getElementById('date').value = resetNow.toISOString().split('T')[0];
-        document.getElementById('startTime').value = resetNow.toISOString().split('T')[1].substring(0, 5);
-        document.getElementById('endTime').value = new Date(resetNow.getTime() + 15 * 60000).toISOString().split('T')[1].substring(0, 5);
-
-        document.getElementById('undoBtn').style.display = 'block';
+        await handleFile();
+        await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dataObj) });
+        alert(sheetName + ' 등록이 완료되었습니다.');
+        document.getElementById(undoBtnId).style.display = 'block';
+        return true;
       } catch (error) {
-        alert('전송 중 오류가 발생했습니다.');
+        alert('전송 오류가 발생했습니다.'); return false;
       } finally {
         document.getElementById('loadingOverlay').style.display = 'none';
-        document.getElementById('submitBtn').disabled = false;
+      }
+    }
+
+    // 1번: 상황보고 폼 전송
+    document.getElementById('reportForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      let finalType = document.getElementById('typeSelect').value;
+      if (finalType === '직접입력') finalType = document.getElementById('customType').value;
+      
+      let finalPrev = document.getElementById('preventionSelect').value;
+      if (finalPrev === '직접입력') finalPrev = document.getElementById('customPrevention').value;
+
+      lastUuid1 = Date.now().toString(36);
+      localStorage.setItem('autosave_worker', document.getElementById('workerInput').value); // 근무자 이름 저장
+
+      const submitData = {
+        action: 'insert',
+        sheetName: '상황보고', // 시트 이름 분배기
+        uuid: lastUuid1,
+        date: document.getElementById('dateDisplay').value, // 02/26(목)
+        type: finalType,
+        prevention: finalPrev,
+        worker: document.getElementById('workerInput').value,
+        patient: document.getElementById('patientInput').value,
+        resultText: document.getElementById('resultInput').value
+      };
+
+      if(await submitForm('reportForm', '상황보고', submitData, 'photo1', 'undoBtn1')) {
+        // 성공 시 내용 초기화
+        this.reset();
+        document.getElementById('dateDisplay').value = getFormattedDate(); // 날짜 다시 채우기
+        document.getElementById('workerInput').value = localStorage.getItem('autosave_worker'); // 이름 유지
+        document.getElementById('customType').style.display = 'none';
+        document.getElementById('customPrevention').style.display = 'none';
       }
     });
 
-    document.getElementById('undoBtn').addEventListener('click', async function() {
-      if(!confirm('방금 제출한 보고를 정말 삭제하시겠습니까?')) return;
-      document.getElementById('loadingOverlay').style.display = 'flex';
-      
-      try {
-        await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'delete', uuid: lastSubmittedUuid }) });
-        alert('제출된 보고가 삭제되었습니다.');
-        document.getElementById('undoBtn').style.display = 'none'; 
-      } catch (error) { alert('삭제 요청 중 오류가 발생했습니다.'); } 
-      finally { document.getElementById('loadingOverlay').style.display = 'none'; }
+    // 2번: 미시건 소등 전송 (임시)
+    document.getElementById('form2').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      lastUuid2 = Date.now().toString(36);
+      const data = { action: 'insert', sheetName: '미시건및소등', uuid: lastUuid2, date: getFormattedDate(), content: document.getElementById('content2').value };
+      if(await submitForm('form2', '미시건및소등', data, 'photo2', 'undoBtn2')) this.reset();
     });
+
+    // 3번: 작업 현황 전송 (임시)
+    document.getElementById('form3').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      lastUuid3 = Date.now().toString(36);
+      const data = { action: 'insert', sheetName: '작업현황', uuid: lastUuid3, date: getFormattedDate(), content: document.getElementById('content3').value };
+      if(await submitForm('form3', '작업현황', data, 'photo3', 'undoBtn3')) this.reset();
+    });
+
+    // 공통: 삭제 버튼 기능
+    async function handleUndo(sheetName, uuid, btnId) {
+      if(!confirm('방금 제출한 내용을 삭제하시겠습니까?')) return;
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      try {
+        await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'delete', sheetName: sheetName, uuid: uuid }) });
+        alert('삭제되었습니다.'); document.getElementById(btnId).style.display = 'none';
+      } catch(e) { alert('오류 발생'); } finally { document.getElementById('loadingOverlay').style.display = 'none'; }
+    }
+    
+    document.getElementById('undoBtn1').addEventListener('click', () => handleUndo('상황보고', lastUuid1, 'undoBtn1'));
+    document.getElementById('undoBtn2').addEventListener('click', () => handleUndo('미시건및소등', lastUuid2, 'undoBtn2'));
+    document.getElementById('undoBtn3').addEventListener('click', () => handleUndo('작업현황', lastUuid3, 'undoBtn3'));
+
   </script>
 </body>
 </html>
