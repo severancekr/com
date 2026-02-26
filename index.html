@@ -6,66 +6,104 @@
   <title>통합 업무 관리 시스템</title>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <style>
-    :root { --primary-color: #008489; --secondary-color: #005c61; --text-color: #333333; --input-border: #d1dce5; --white: #ffffff; --bg-gray: #f4f7f9; }
-    body, html { margin: 0; padding: 0; height: 100%; font-family: 'Pretendard', sans-serif; background-image: url('https://ksnnews.or.kr/news/data/2025/03/11/p1065595035371594_319_thum.png'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-color); display: flex; justify-content: center; align-items: center; }
+    /* 신뢰감 가는 프리미엄 테마 컬러 */
+    :root { --primary-color: #006670; --secondary-color: #008489; --accent-color: #e6f7f8; --text-color: #2c3e50; --input-border: #cbd5e1; --white: #ffffff; --danger-color: #e74c3c; }
     
-    /* 앱 화면 컨테이너 */
-    .app-container { width: 100%; max-width: 420px; height: 95vh; margin: 10px; background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); overflow: hidden; display: flex; flex-direction: column; position: relative; }
+    /* ★ 요청하신 새로운 배경 이미지로 변경 완료 ★ */
+    body, html { margin: 0; padding: 0; height: 100%; font-family: 'Pretendard', sans-serif; background-image: url('https://www.whosaeng.com/imgdata/whosaeng_com/202211/2022112932303587.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-color); display: flex; justify-content: center; align-items: center; }
     
-    /* 화면 전환용 클래스 */
-    .screen { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 25px; box-sizing: border-box; }
-    .screen.active { display: block; animation: fadeIn 0.3s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    /* 메인 앱 컨테이너 (고급스러운 유리질감 & 곡선) */
+    .app-container { width: 100%; max-width: 420px; height: 95vh; margin: 10px; background-color: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 24px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); overflow: hidden; display: flex; flex-direction: column; position: relative; border: 1px solid rgba(255,255,255,0.5); }
+    
+    .screen { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 30px 25px; box-sizing: border-box; }
+    .screen.active { display: block; animation: fadeSlideUp 0.4s ease-out; }
+    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* 홈 화면(메뉴) 스타일 */
-    .home-header { text-align: center; margin-bottom: 40px; margin-top: 20px; }
-    .home-header h1 { color: var(--primary-color); font-size: 24px; margin: 0 0 10px 0; }
-    .menu-btn { width: 100%; background-color: var(--white); border: 2px solid var(--primary-color); border-radius: 12px; padding: 20px; margin-bottom: 15px; font-size: 18px; font-weight: 700; color: var(--primary-color); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    .menu-btn:hover { background-color: var(--primary-color); color: var(--white); }
+    /* 프리미엄 홈 메뉴 UI */
+    .home-header { text-align: center; margin-bottom: 35px; margin-top: 15px; }
+    .home-header h1 { color: var(--primary-color); font-size: 26px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.5px; }
+    .home-header p { color: #64748b; font-size: 14px; margin: 0; font-weight: 500; }
     
+    .menu-grid { display: flex; flex-direction: column; gap: 16px; }
+    .menu-card { background: var(--white); border-left: 6px solid var(--secondary-color); border-radius: 16px; padding: 22px 20px; display: flex; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); text-decoration: none; border-top: 1px solid #f1f5f9; border-right: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; }
+    .menu-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0, 102, 112, 0.15); border-left-color: var(--primary-color); }
+    .menu-card:active { transform: translateY(0); }
+    .menu-icon { font-size: 32px; margin-right: 18px; background: var(--accent-color); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
+    .menu-text { text-align: left; }
+    .menu-text h3 { margin: 0 0 4px 0; color: var(--text-color); font-size: 18px; font-weight: 700; }
+    .menu-text p { margin: 0; color: #64748b; font-size: 13px; font-weight: 500; }
+
     /* 서브 폼 화면 스타일 */
-    .back-btn { background: none; border: none; color: #555; font-size: 16px; font-weight: 600; cursor: pointer; padding: 0; margin-bottom: 20px; display: flex; align-items: center; }
-    .form-header h2 { color: var(--primary-color); margin: 0 0 20px 0; font-size: 20px; border-bottom: 2px solid rgba(0,0,0,0.05); padding-bottom: 15px; }
+    .back-btn { background: #f1f5f9; border: none; color: #475569; font-size: 14px; font-weight: 700; cursor: pointer; padding: 8px 16px; border-radius: 20px; margin-bottom: 25px; display: inline-flex; align-items: center; transition: 0.2s; }
+    .back-btn:hover { background: #e2e8f0; color: var(--primary-color); }
+    .form-header h2 { color: var(--primary-color); margin: 0 0 25px 0; font-size: 22px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
     
-    .form-group { margin-bottom: 20px; }
-    label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
-    input[type="text"], select, textarea, input[type="file"] { width: 100%; padding: 12px; border: 1px solid var(--input-border); border-radius: 8px; box-sizing: border-box; font-size: 15px; font-family: inherit; background-color: var(--white); -webkit-appearance: none; }
-    input[readonly] { background-color: #f0f0f0; color: #555; font-weight: bold; } /* 자동입력 날짜칸 */
-    textarea { resize: none; height: 100px; }
-    .submit-btn { width: 100%; padding: 14px; background-color: var(--primary-color); color: var(--white); border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; }
-    .undo-btn { width: 100%; padding: 12px; background-color: var(--white); color: var(--danger-color); border: 1px solid var(--danger-color); border-radius: 8px; font-size: 14px; font-weight: 700; margin-top: 15px; cursor: pointer; display: none; }
+    .form-group { margin-bottom: 22px; }
+    label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px; color: #334155; }
+    .required::after { content: "*"; color: var(--danger-color); margin-left: 4px; }
+    .time-flex { display: flex; align-items: center; gap: 10px; }
+    input[type="text"], input[type="time"], select, textarea, input[type="file"] { width: 100%; padding: 14px; border: 1.5px solid var(--input-border); border-radius: 10px; box-sizing: border-box; font-size: 15px; font-family: inherit; background-color: #f8fafc; transition: all 0.2s; -webkit-appearance: none; color: #0f172a; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--secondary-color); background-color: var(--white); box-shadow: 0 0 0 4px rgba(0, 132, 137, 0.1); }
+    input[readonly] { background-color: #e2e8f0; color: #475569; font-weight: bold; border-color: #e2e8f0; cursor: not-allowed; } 
+    textarea { resize: none; height: 110px; }
+    
+    .submit-btn { width: 100%; padding: 16px; background-color: var(--primary-color); color: var(--white); border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 15px; transition: 0.3s; box-shadow: 0 4px 12px rgba(0, 102, 112, 0.2); }
+    .submit-btn:hover { background-color: #004d55; transform: translateY(-2px); }
+    .undo-btn { width: 100%; padding: 14px; background-color: transparent; color: var(--danger-color); border: 2px solid var(--danger-color); border-radius: 12px; font-size: 15px; font-weight: 700; margin-top: 15px; cursor: pointer; display: none; transition: 0.2s; }
+    .undo-btn:hover { background-color: #fef2f2; }
 
-    .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 100; display: none; justify-content: center; align-items: center; flex-direction: column; }
-    .spinner { border: 4px solid rgba(0, 132, 137, 0.1); width: 40px; height: 40px; border-radius: 50%; border-left-color: var(--primary-color); animation: spin 1s linear infinite; margin-bottom: 10px; }
+    /* 로딩 애니메이션 */
+    .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); backdrop-filter: blur(5px); z-index: 100; display: none; justify-content: center; align-items: center; flex-direction: column; }
+    .spinner { border: 4px solid #e2e8f0; width: 45px; height: 45px; border-radius: 50%; border-left-color: var(--primary-color); animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite; margin-bottom: 15px; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
   <div class="app-container">
-    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p style="color: #008489; font-weight: 600;">데이터 전송 중...</p></div>
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p style="color: #006670; font-weight: 700;">안전하게 전송 중입니다...</p></div>
 
     <div id="homeScreen" class="screen active">
       <div class="home-header">
         <h1>통합 업무 시스템</h1>
-        <p style="color:#666; font-size:14px;">원하시는 업무를 선택해 주세요.</p>
+        <p>정확하고 신속한 스마트 보고 채널</p>
       </div>
-      <button class="menu-btn" onclick="showScreen('form1Screen')">📋 상황 보고</button>
-      <button class="menu-btn" onclick="showScreen('form2Screen')">🔦 미시건 및 소등</button>
-      <button class="menu-btn" onclick="showScreen('form3Screen')">🛠️ 작업 현황</button>
+      
+      <div class="menu-grid">
+        <div class="menu-card" onclick="showScreen('form1Screen')">
+          <div class="menu-icon">📋</div>
+          <div class="menu-text">
+            <h3>상황 보고</h3>
+            <p>환자동행, 병동/외래 사고 지원</p>
+          </div>
+        </div>
+        
+        <div class="menu-card" onclick="showScreen('form2Screen')">
+          <div class="menu-icon">🔦</div>
+          <div class="menu-text">
+            <h3>미시건 및 소등</h3>
+            <p>부서별 야간 보안/소등 점검</p>
+          </div>
+        </div>
+        
+        <div class="menu-card" onclick="showScreen('form3Screen')">
+          <div class="menu-icon">🛠️</div>
+          <div class="menu-text">
+            <h3>작업 현황</h3>
+            <p>시설 점검 및 기타 부서별 작업</p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="form1Screen" class="screen">
-      <button class="back-btn" onclick="showScreen('homeScreen')">◀ 뒤로 가기</button>
+      <button class="back-btn" onclick="showScreen('homeScreen')">◀ 메인으로</button>
       <div class="form-header"><h2>상황 보고 작성</h2></div>
       
       <form id="reportForm">
-        <div class="form-group">
-          <label>1. 날짜 (자동입력)</label>
-          <input type="text" id="dateDisplay" readonly>
-        </div>
+        <div class="form-group"><label>1. 날짜 (자동입력)</label><input type="text" class="auto-date" readonly></div>
 
         <div class="form-group">
-          <label>2. 유형</label>
+          <label class="required">2. 유형</label>
           <select id="typeSelect" required>
             <option value="" disabled selected>선택해주세요</option>
             <option value="외래">외래</option><option value="병동">병동</option>
@@ -75,7 +113,7 @@
         </div>
 
         <div class="form-group">
-          <label>3. 예방내역</label>
+          <label class="required">3. 예방내역</label>
           <select id="preventionSelect" required>
             <option value="" disabled selected>선택해주세요</option>
             <option value="환자동행">환자동행</option><option value="상황출동">상황출동</option>
@@ -85,25 +123,18 @@
           <input type="text" id="customPrevention" placeholder="예방내역 직접 입력" style="display:none; margin-top:8px;">
         </div>
 
+        <div class="form-group"><label class="required">4. 근무자</label><input type="text" id="worker1" class="sync-worker" placeholder="예) 홍길동 외 1명" required></div>
+        <div class="form-group"><label class="required">5. 사고자</label><input type="text" id="patientInput" placeholder="예) 김철수(69/남)" required></div>
+        <div class="form-group"><label class="required">6. 조치결과</label><textarea id="resultInput" placeholder="조치하신 결과를 상세히 적어주세요." required></textarea></div>
+        
         <div class="form-group">
-          <label>4. 근무자</label>
-          <input type="text" id="workerInput" placeholder="예) 홍길동 외 1명" required>
+          <label class="required">7. 업무 시간 (시작 ~ 종료)</label>
+          <div class="time-flex">
+            <input type="time" id="startTime1" required><span>~</span><input type="time" id="endTime1" required>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label>5. 사고자</label>
-          <input type="text" id="patientInput" placeholder="예) 김철수(69/남)" required>
-        </div>
-
-        <div class="form-group">
-          <label>6. 조치결과</label>
-          <textarea id="resultInput" placeholder="조치하신 결과를 상세히 적어주세요." required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>7. 사진 첨부 (선택)</label>
-          <input type="file" id="photo1" accept="image/*">
-        </div>
+        <div class="form-group"><label>8. 사진 첨부 (선택)</label><input type="file" id="photo1" accept="image/*"></div>
 
         <button type="submit" class="submit-btn">보고 제출하기</button>
         <button type="button" class="undo-btn" id="undoBtn1">방금 제출한 내용 삭제</button>
@@ -111,22 +142,32 @@
     </div>
 
     <div id="form2Screen" class="screen">
-      <button class="back-btn" onclick="showScreen('homeScreen')">◀ 뒤로 가기</button>
+      <button class="back-btn" onclick="showScreen('homeScreen')">◀ 메인으로</button>
       <div class="form-header"><h2>미시건 및 소등 점검</h2></div>
+      
       <form id="form2">
-        <div class="form-group"><label>점검 내용</label><textarea id="content2" placeholder="점검 내용을 입력해주세요." required></textarea></div>
-        <div class="form-group"><label>사진 첨부</label><input type="file" id="photo2" accept="image/*"></div>
+        <div class="form-group"><label>1. 날짜 (자동입력)</label><input type="text" class="auto-date" readonly></div>
+        <div class="form-group"><label class="required">2. 근무자</label><input type="text" id="worker2" class="sync-worker" placeholder="근무자 이름 입력" required></div>
+        <div class="form-group"><label class="required">3. 외래미시건미소등</label><textarea id="content2" placeholder="예) 5층 근전도실 1,2 미시건" required></textarea></div>
+        <div class="form-group"><label class="required">4. 확인시간</label><input type="time" id="checkTime2" required></div>
+        <div class="form-group"><label>5. 사진 첨부 (선택)</label><input type="file" id="photo2" accept="image/*"></div>
+        
         <button type="submit" class="submit-btn">점검 제출하기</button>
         <button type="button" class="undo-btn" id="undoBtn2">방금 제출한 내용 삭제</button>
       </form>
     </div>
 
     <div id="form3Screen" class="screen">
-      <button class="back-btn" onclick="showScreen('homeScreen')">◀ 뒤로 가기</button>
+      <button class="back-btn" onclick="showScreen('homeScreen')">◀ 메인으로</button>
       <div class="form-header"><h2>작업 현황 보고</h2></div>
+      
       <form id="form3">
-        <div class="form-group"><label>작업 내용</label><textarea id="content3" placeholder="현황 내용을 입력해주세요." required></textarea></div>
-        <div class="form-group"><label>사진 첨부</label><input type="file" id="photo3" accept="image/*"></div>
+        <div class="form-group"><label>1. 날짜 (자동입력)</label><input type="text" class="auto-date" readonly></div>
+        <div class="form-group"><label class="required">2. 근무자</label><input type="text" id="worker3" class="sync-worker" placeholder="근무자 이름 입력" required></div>
+        <div class="form-group"><label class="required">3. 부서작업현황</label><textarea id="content3" placeholder="작업하신 상세 내용을 입력해주세요." required></textarea></div>
+        <div class="form-group"><label class="required">4. 확인시간</label><input type="time" id="checkTime3" required></div>
+        <div class="form-group"><label>5. 사진 첨부 (선택)</label><input type="file" id="photo3" accept="image/*"></div>
+        
         <button type="submit" class="submit-btn">현황 제출하기</button>
         <button type="button" class="undo-btn" id="undoBtn3">방금 제출한 내용 삭제</button>
       </form>
@@ -135,43 +176,45 @@
   </div>
 
   <script>
-    // ★ 주의: 앱스 스크립트 웹 앱 URL을 붙여넣으세요.
+    // ★ 기존에 잘 작동하던 앱스 스크립트 '웹 앱 URL'을 이곳에 다시 붙여넣어 주세요!
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxK9_OtEHMpThIjXP6bUwi5j_cEMoFN9tDsd69qavXceqnq8fxWzJruMYpreuk8dUMS7A/exec';
     
-    // UUID (삭제용)
     let lastUuid1 = null; let lastUuid2 = null; let lastUuid3 = null;
+    const kstOffset = 9 * 60;
 
-    // 날짜 포맷팅: MM/DD(요일) - 예: 02/26(목)
     function getFormattedDate() {
-      const now = new Date();
-      now.setMinutes(now.getMinutes() + (9 * 60)); // KST 보정
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const date = String(now.getDate()).padStart(2, '0');
-      const days = ['일','월','화','수','목','금','토'];
-      const day = days[now.getDay()];
-      return `${month}/${date}(${day})`;
+      const now = new Date(); now.setMinutes(now.getMinutes() + kstOffset);
+      return `${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}(${['일','월','화','수','목','금','토'][now.getDay()]})`;
     }
+    function getCurrentTime() { const d = new Date(); d.setMinutes(d.getMinutes() + kstOffset); return d.toISOString().split('T')[1].substring(0,5); }
+    function getEndTime() { const d = new Date(); d.setMinutes(d.getMinutes() + kstOffset + 15); return d.toISOString().split('T')[1].substring(0,5); }
 
-    // 앱 화면 전환 함수
     function showScreen(screenId) {
       document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
       document.getElementById(screenId).classList.add('active');
     }
 
-    // 초기 세팅
     window.addEventListener('load', () => {
-      document.getElementById('dateDisplay').value = getFormattedDate();
-      
-      // 자동 복구 (근무자 이름만 기억하도록 세팅)
+      document.querySelectorAll('.auto-date').forEach(el => el.value = getFormattedDate());
+      document.getElementById('startTime1').value = getCurrentTime();
+      document.getElementById('endTime1').value = getEndTime();
+      document.getElementById('checkTime2').value = getCurrentTime();
+      document.getElementById('checkTime3').value = getCurrentTime();
+
       const savedWorker = localStorage.getItem('autosave_worker');
-      if(savedWorker) document.getElementById('workerInput').value = savedWorker;
+      if(savedWorker) { document.querySelectorAll('.sync-worker').forEach(el => el.value = savedWorker); }
     });
 
-    // 드롭다운 '직접입력' 이벤트 처리
+    document.querySelectorAll('.sync-worker').forEach(input => {
+      input.addEventListener('input', function() {
+        localStorage.setItem('autosave_worker', this.value);
+        document.querySelectorAll('.sync-worker').forEach(el => el.value = this.value);
+      });
+    });
+
     function handleDirectInput(selectId, inputId) {
-      const select = document.getElementById(selectId);
-      const input = document.getElementById(inputId);
-      select.addEventListener('change', function() {
+      document.getElementById(selectId).addEventListener('change', function() {
+        const input = document.getElementById(inputId);
         if(this.value === '직접입력') { input.style.display = 'block'; input.required = true; } 
         else { input.style.display = 'none'; input.required = false; input.value = ''; }
       });
@@ -179,100 +222,97 @@
     handleDirectInput('typeSelect', 'customType');
     handleDirectInput('preventionSelect', 'customPrevention');
 
-    // 공통 제출 함수 (어느 시트로 보낼지 sheetName 으로 결정)
-    async function submitForm(formId, sheetName, dataObj, photoInputId, undoBtnId) {
+    async function submitForm(sheetName, dataObj, photoInputId, undoBtnId) {
       document.getElementById('loadingOverlay').style.display = 'flex';
-      
       const fileInput = document.getElementById(photoInputId);
       
-      const handleFile = () => {
-        return new Promise((resolve) => {
-          const file = fileInput.files[0];
-          if (!file) { resolve(); return; }
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            const img = new Image();
-            img.onload = function() {
-              const canvas = document.createElement('canvas');
-              let w = img.width, h = img.height;
-              if (w > 1024) { h = Math.round(h * 1024 / w); w = 1024; }
-              canvas.width = w; canvas.height = h;
-              canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-              dataObj.fileData = canvas.toDataURL('image/jpeg', 0.8);
-              dataObj.fileName = file.name;
-              resolve();
-            };
-            img.src = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        });
-      };
+      const handleFile = () => new Promise((resolve) => {
+        const file = fileInput.files[0];
+        if (!file) { resolve(); return; }
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let w = img.width, h = img.height;
+            if (w > 1024) { h = Math.round(h * 1024 / w); w = 1024; }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            dataObj.fileData = canvas.toDataURL('image/jpeg', 0.8);
+            dataObj.fileName = file.name; resolve();
+          }; img.src = e.target.result;
+        }; reader.readAsDataURL(file);
+      });
 
       try {
         await handleFile();
         await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dataObj) });
-        alert(sheetName + ' 등록이 완료되었습니다.');
+        alert(sheetName + ' 등록 완료!');
         document.getElementById(undoBtnId).style.display = 'block';
         return true;
-      } catch (error) {
-        alert('전송 오류가 발생했습니다.'); return false;
-      } finally {
-        document.getElementById('loadingOverlay').style.display = 'none';
-      }
+      } catch (error) { alert('전송 오류가 발생했습니다.'); return false; } 
+      finally { document.getElementById('loadingOverlay').style.display = 'none'; }
     }
 
-    // 1번: 상황보고 폼 전송
     document.getElementById('reportForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      
-      let finalType = document.getElementById('typeSelect').value;
-      if (finalType === '직접입력') finalType = document.getElementById('customType').value;
-      
-      let finalPrev = document.getElementById('preventionSelect').value;
-      if (finalPrev === '직접입력') finalPrev = document.getElementById('customPrevention').value;
+      let type = document.getElementById('typeSelect').value; if (type === '직접입력') type = document.getElementById('customType').value;
+      let prev = document.getElementById('preventionSelect').value; if (prev === '직접입력') prev = document.getElementById('customPrevention').value;
 
       lastUuid1 = Date.now().toString(36);
-      localStorage.setItem('autosave_worker', document.getElementById('workerInput').value); // 근무자 이름 저장
-
-      const submitData = {
-        action: 'insert',
-        sheetName: '상황보고', // 시트 이름 분배기
-        uuid: lastUuid1,
-        date: document.getElementById('dateDisplay').value, // 02/26(목)
-        type: finalType,
-        prevention: finalPrev,
-        worker: document.getElementById('workerInput').value,
+      const data = {
+        action: 'insert', sheetName: '상황보고', uuid: lastUuid1,
+        date: document.querySelectorAll('.auto-date')[0].value,
+        type: type, prevention: prev,
+        worker: document.getElementById('worker1').value,
         patient: document.getElementById('patientInput').value,
-        resultText: document.getElementById('resultInput').value
+        resultText: document.getElementById('resultInput').value,
+        timeRange: `${document.getElementById('startTime1').value}~${document.getElementById('endTime1').value}`
       };
 
-      if(await submitForm('reportForm', '상황보고', submitData, 'photo1', 'undoBtn1')) {
-        // 성공 시 내용 초기화
+      if(await submitForm('상황보고', data, 'photo1', 'undoBtn1')) {
         this.reset();
-        document.getElementById('dateDisplay').value = getFormattedDate(); // 날짜 다시 채우기
-        document.getElementById('workerInput').value = localStorage.getItem('autosave_worker'); // 이름 유지
-        document.getElementById('customType').style.display = 'none';
-        document.getElementById('customPrevention').style.display = 'none';
+        document.querySelectorAll('.auto-date')[0].value = getFormattedDate();
+        document.getElementById('startTime1').value = getCurrentTime(); document.getElementById('endTime1').value = getEndTime();
+        document.getElementById('worker1').value = localStorage.getItem('autosave_worker');
+        document.getElementById('customType').style.display = 'none'; document.getElementById('customPrevention').style.display = 'none';
       }
     });
 
-    // 2번: 미시건 소등 전송 (임시)
     document.getElementById('form2').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      lastUuid2 = Date.now().toString(36);
-      const data = { action: 'insert', sheetName: '미시건및소등', uuid: lastUuid2, date: getFormattedDate(), content: document.getElementById('content2').value };
-      if(await submitForm('form2', '미시건및소등', data, 'photo2', 'undoBtn2')) this.reset();
+      e.preventDefault(); lastUuid2 = Date.now().toString(36);
+      const data = {
+        action: 'insert', sheetName: '미시건및소등', uuid: lastUuid2,
+        date: document.querySelectorAll('.auto-date')[1].value,
+        worker: document.getElementById('worker2').value,
+        content: document.getElementById('content2').value,
+        checkTime: document.getElementById('checkTime2').value
+      };
+      if(await submitForm('미시건및소등', data, 'photo2', 'undoBtn2')) {
+        this.reset();
+        document.querySelectorAll('.auto-date')[1].value = getFormattedDate();
+        document.getElementById('checkTime2').value = getCurrentTime();
+        document.getElementById('worker2').value = localStorage.getItem('autosave_worker');
+      }
     });
 
-    // 3번: 작업 현황 전송 (임시)
     document.getElementById('form3').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      lastUuid3 = Date.now().toString(36);
-      const data = { action: 'insert', sheetName: '작업현황', uuid: lastUuid3, date: getFormattedDate(), content: document.getElementById('content3').value };
-      if(await submitForm('form3', '작업현황', data, 'photo3', 'undoBtn3')) this.reset();
+      e.preventDefault(); lastUuid3 = Date.now().toString(36);
+      const data = {
+        action: 'insert', sheetName: '작업현황', uuid: lastUuid3,
+        date: document.querySelectorAll('.auto-date')[2].value,
+        worker: document.getElementById('worker3').value,
+        content: document.getElementById('content3').value,
+        checkTime: document.getElementById('checkTime3').value
+      };
+      if(await submitForm('작업현황', data, 'photo3', 'undoBtn3')) {
+        this.reset();
+        document.querySelectorAll('.auto-date')[2].value = getFormattedDate();
+        document.getElementById('checkTime3').value = getCurrentTime();
+        document.getElementById('worker3').value = localStorage.getItem('autosave_worker');
+      }
     });
 
-    // 공통: 삭제 버튼 기능
     async function handleUndo(sheetName, uuid, btnId) {
       if(!confirm('방금 제출한 내용을 삭제하시겠습니까?')) return;
       document.getElementById('loadingOverlay').style.display = 'flex';
@@ -285,7 +325,6 @@
     document.getElementById('undoBtn1').addEventListener('click', () => handleUndo('상황보고', lastUuid1, 'undoBtn1'));
     document.getElementById('undoBtn2').addEventListener('click', () => handleUndo('미시건및소등', lastUuid2, 'undoBtn2'));
     document.getElementById('undoBtn3').addEventListener('click', () => handleUndo('작업현황', lastUuid3, 'undoBtn3'));
-
   </script>
 </body>
 </html>
