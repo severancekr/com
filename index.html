@@ -3,12 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <meta property="og:title" content="통합 업무 시스템">
+  <meta property="og:description" content="세브란스병원 에스텍시스템 스마트 보고 채널">
+  <meta property="og:image" content="https://tistory1.daumcdn.net/tistory/4488967/skin/images/stecseverance.png">
+  <meta property="og:type" content="website">
+
   <title>통합 업무 관리 시스템</title>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <style>
     :root { --primary-color: #006670; --secondary-color: #008489; --accent-color: #e6f7f8; --text-color: #2c3e50; --input-border: #cbd5e1; --white: #ffffff; --danger-color: #e74c3c; }
     
-    body, html { margin: 0; padding: 0; height: 100%; font-family: 'Pretendard', sans-serif; background-image: url('https://dailymedi.com/data/news_cont/2508/thumb-d20250811_32182277_DeECPjsq_642bb01d89f2ecc2f61719b32ce03d190370162d_800x534.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-color); display: flex; justify-content: center; align-items: center; }
+    body, html { margin: 0; padding: 0; height: 100%; font-family: 'Pretendard', sans-serif; background-image: url('https://ksnnews.or.kr/news/data/2025/03/11/p1065595035371594_319_thum.png'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-color); display: flex; justify-content: center; align-items: center; }
     
     .app-container { width: 100%; max-width: 420px; height: 95vh; margin: 10px; background-color: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 24px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); overflow: hidden; display: flex; flex-direction: column; position: relative; border: 1px solid rgba(255,255,255,0.5); }
     
@@ -42,7 +48,6 @@
     input[readonly] { background-color: #e2e8f0; color: #475569; font-weight: bold; border-color: #e2e8f0; cursor: not-allowed; } 
     textarea { resize: none; height: 110px; }
     
-    /* 하단 액션 버튼 영역 스타일 */
     .submit-btn { width: 100%; padding: 16px; background-color: var(--primary-color); color: var(--white); border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 5px; transition: 0.3s; box-shadow: 0 4px 12px rgba(0, 102, 112, 0.2); }
     .submit-btn:hover { background-color: #004d55; transform: translateY(-2px); }
     
@@ -188,7 +193,6 @@
   </div>
 
   <script>
-    // ★ 실장님의 스크립트 고정 URL
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxK9_OtEHMpThIjXP6bUwi5j_cEMoFN9tDsd69qavXceqnq8fxWzJruMYpreuk8dUMS7A/exec';
     
     let lastUuid1 = null; let lastUuid2 = null; let lastUuid3 = null;
@@ -206,37 +210,31 @@
       document.getElementById(screenId).classList.add('active');
     }
 
-    // 제출 후 메인으로 돌아가면서 버튼 원상복구
     function goHomeAndReset(formNum) {
       document.getElementById('actionArea' + formNum).style.display = 'block';
       document.getElementById('successArea' + formNum).style.display = 'none';
       showScreen('homeScreen');
     }
 
-    // ★ 카메라 튕김 완벽 대비: 모든 입력창 임시저장 로직 (강화됨)
     window.addEventListener('load', () => {
       document.querySelectorAll('.auto-date').forEach(el => el.value = getFormattedDate());
       
-      // 저장된 데이터 복원
       document.querySelectorAll('.save-state').forEach(el => {
         const savedVal = localStorage.getItem('as_' + el.id);
         if(savedVal) {
           el.value = savedVal;
-          if(el.tagName === 'SELECT') el.dispatchEvent(new Event('change')); // 드롭다운 상태 복원
+          if(el.tagName === 'SELECT') el.dispatchEvent(new Event('change'));
         }
-        // 글자를 칠 때마다 즉시 저장
         el.addEventListener('input', () => localStorage.setItem('as_' + el.id, el.value));
         el.addEventListener('change', () => localStorage.setItem('as_' + el.id, el.value));
       });
 
-      // 만약 시간 데이터가 저장 안되어있다면 현재 시간으로 세팅
       if(!document.getElementById('startTime1').value) document.getElementById('startTime1').value = getCurrentTime();
       if(!document.getElementById('endTime1').value) document.getElementById('endTime1').value = getEndTime();
       if(!document.getElementById('checkTime2').value) document.getElementById('checkTime2').value = getCurrentTime();
       if(!document.getElementById('checkTime3').value) document.getElementById('checkTime3').value = getCurrentTime();
     });
 
-    // 근무자 이름 동기화 (특수처리)
     document.querySelectorAll('.sync-worker').forEach(input => {
       input.addEventListener('input', function() {
         document.querySelectorAll('.sync-worker').forEach(el => {
@@ -256,7 +254,6 @@
     handleDirectInput('typeSelect', 'customType');
     handleDirectInput('preventionSelect', 'customPrevention');
 
-    // 성공적으로 전송 완료 후 임시저장 비우기 (근무자 이름 제외)
     function clearAutoSave() {
       document.querySelectorAll('.save-state').forEach(el => {
         if(!el.id.includes('worker')) {
@@ -292,7 +289,6 @@
         await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dataObj) });
         alert(sheetName + ' 등록 완료!');
         
-        // 제출 성공 시 버튼 영역 교체 (제출버튼 숨기고 '처음 돌아가기' 표시)
         document.getElementById('actionArea' + formNum).style.display = 'none';
         document.getElementById('successArea' + formNum).style.display = 'block';
         clearAutoSave();
@@ -366,7 +362,6 @@
       try {
         await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'delete', sheetName: sheetName, uuid: uuid }) });
         alert('삭제되었습니다.'); 
-        // 삭제 성공 시 다시 쓸 수 있게 원래 버튼으로 복구
         document.getElementById('actionArea' + formNum).style.display = 'block';
         document.getElementById('successArea' + formNum).style.display = 'none';
       } catch(e) { alert('오류 발생'); } finally { document.getElementById('loadingOverlay').style.display = 'none'; }
