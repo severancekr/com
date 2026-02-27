@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
-  <meta property="og:title" content="에스텍차세대시스템">
-  <meta property="og:description" content="신촌 보안업무 스마트 보고">
+  <meta property="og:title" content="통합 업무 시스템">
+  <meta property="og:description" content="세브란스병원 에스텍시스템 스마트 보고 채널">
   <meta property="og:image" content="https://tistory1.daumcdn.net/tistory/4488967/skin/images/stecseverance.png">
   <meta property="og:type" content="website">
 
@@ -14,7 +14,7 @@
   <style>
     :root { --primary-color: #006670; --secondary-color: #008489; --accent-color: #e6f7f8; --text-color: #2c3e50; --input-border: #cbd5e1; --white: #ffffff; --danger-color: #e74c3c; }
     
-    body, html { margin: 0; padding: 0; height: 100%; font-family: 'Pretendard', sans-serif; background-image: url('https://ksnnews.or.kr/news/data/2025/03/11/p1065595035371594_319_thum.png'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-color); display: flex; justify-content: center; align-items: center; }
+    body, html { margin: 0; padding: 0; height: 100%; font-family: 'Pretendard', sans-serif; background-image: url('https://newsx.ecn.cdn.infralab.net/www.whosaeng.com/imgdata/whosaeng_com/202211/2022112932303587.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-color); display: flex; justify-content: center; align-items: center; }
     
     .app-container { width: 100%; max-width: 420px; height: 95vh; margin: 10px; background-color: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 24px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); overflow: hidden; display: flex; flex-direction: column; position: relative; border: 1px solid rgba(255,255,255,0.5); }
     
@@ -25,17 +25,16 @@
     .logo-wrapper { width: 80px; height: 80px; margin: 0 auto 15px auto; background-color: var(--white); border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; border: 2px solid var(--accent-color); }
     .logo-wrapper img { width: 65%; height: auto; object-fit: contain; }
 
-    .home-header { text-align: center; margin-bottom: 35px; margin-top: 10px; }
-    .home-header h1 { color: var(--primary-color); font-size: 26px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.5px; }
-    .home-header p { color: #64748b; font-size: 14px; margin: 0; font-weight: 500; }
+    .home-header { text-align: center; margin-bottom: 30px; margin-top: 5px; }
+    .home-header h1 { color: var(--primary-color); font-size: 24px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.5px; }
+    .home-header p { color: #64748b; font-size: 13px; margin: 0; font-weight: 500; }
     
-    .menu-grid { display: flex; flex-direction: column; gap: 16px; }
-    .menu-card { background: var(--white); border-left: 6px solid var(--secondary-color); border-radius: 16px; padding: 22px 20px; display: flex; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border-top: 1px solid #f1f5f9; border-right: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; }
-    .menu-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0, 102, 112, 0.15); border-left-color: var(--primary-color); }
-    .menu-icon { font-size: 32px; margin-right: 18px; background: var(--accent-color); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
-    .menu-text { text-align: left; }
-    .menu-text h3 { margin: 0 0 4px 0; color: var(--text-color); font-size: 18px; font-weight: 700; }
-    .menu-text p { margin: 0; color: #64748b; font-size: 13px; font-weight: 500; }
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .menu-card { background: var(--white); border-top: 4px solid var(--secondary-color); border-radius: 16px; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    .menu-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0, 102, 112, 0.15); border-top-color: var(--primary-color); }
+    .menu-icon { font-size: 28px; margin-bottom: 12px; background: var(--accent-color); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
+    .menu-text h3 { margin: 0 0 4px 0; color: var(--text-color); font-size: 16px; font-weight: 700; }
+    .menu-text p { margin: 0; color: #64748b; font-size: 11px; font-weight: 500; word-break: keep-all; }
 
     .form-header h2 { color: var(--primary-color); margin: 0 0 25px 0; font-size: 22px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
     
@@ -43,7 +42,7 @@
     label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px; color: #334155; }
     .required::after { content: "*"; color: var(--danger-color); margin-left: 4px; }
     .time-flex { display: flex; align-items: center; gap: 10px; }
-    input[type="text"], input[type="time"], select, textarea, input[type="file"] { width: 100%; padding: 14px; border: 1.5px solid var(--input-border); border-radius: 10px; box-sizing: border-box; font-size: 15px; font-family: inherit; background-color: #f8fafc; transition: all 0.2s; -webkit-appearance: none; color: #0f172a; }
+    input[type="date"], input[type="text"], input[type="time"], select, textarea, input[type="file"] { width: 100%; padding: 14px; border: 1.5px solid var(--input-border); border-radius: 10px; box-sizing: border-box; font-size: 15px; font-family: inherit; background-color: #f8fafc; transition: all 0.2s; -webkit-appearance: none; color: #0f172a; }
     input:focus, select:focus, textarea:focus { outline: none; border-color: var(--secondary-color); background-color: var(--white); box-shadow: 0 0 0 4px rgba(0, 132, 137, 0.1); }
     input[readonly] { background-color: #e2e8f0; color: #475569; font-weight: bold; border-color: #e2e8f0; cursor: not-allowed; } 
     textarea { resize: none; height: 110px; }
@@ -66,13 +65,11 @@
 </head>
 <body>
   <div class="app-container">
-    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p style="color: #006670; font-weight: 700;">안전하게 전송 중입니다...</p></div>
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p style="color: #006670; font-weight: 700;">안전하게 처리 중입니다...</p></div>
 
     <div id="homeScreen" class="screen active">
       <div class="home-header">
-        <div class="logo-wrapper">
-          <img src="https://s-tec.co.kr/images/icon/cyber_03_01.png" alt="로고">
-        </div>
+        <div class="logo-wrapper"><img src="https://s-tec.co.kr/images/icon/cyber_03_01.png" alt="로고"></div>
         <h1>통합 업무 시스템</h1>
         <p>정확하고 신속한 스마트 보고 채널</p>
       </div>
@@ -80,68 +77,55 @@
       <div class="menu-grid">
         <div class="menu-card" onclick="showScreen('form1Screen')">
           <div class="menu-icon">📋</div>
-          <div class="menu-text"><h3>상황 보고</h3><p>환자동행, 병동/외래 사고 지원</p></div>
+          <div class="menu-text"><h3>상황 보고</h3><p>환자동행, 병동 사고</p></div>
         </div>
         <div class="menu-card" onclick="showScreen('form2Screen')">
           <div class="menu-icon">🔦</div>
-          <div class="menu-text"><h3>미시건 및 소등</h3><p>부서별 야간 보안/소등 점검</p></div>
+          <div class="menu-text"><h3>미시건/소등</h3><p>야간 보안/소등 점검</p></div>
         </div>
         <div class="menu-card" onclick="showScreen('form3Screen')">
           <div class="menu-icon">🛠️</div>
-          <div class="menu-text"><h3>작업 현황</h3><p>시설 점검 및 기타 부서별 작업</p></div>
+          <div class="menu-text"><h3>작업 현황</h3><p>시설 및 부서별 작업</p></div>
+        </div>
+        <div class="menu-card" onclick="showScreen('form4Screen')">
+          <div class="menu-icon">⏰</div>
+          <div class="menu-text"><h3>근태 수정</h3><p>근무조정/변경/수정</p></div>
         </div>
       </div>
     </div>
 
     <div id="form1Screen" class="screen">
       <div class="form-header"><h2>상황 보고 작성</h2></div>
-      
       <form id="reportForm">
         <div class="form-group"><label>1. 날짜 (자동입력)</label><input type="text" class="auto-date" readonly></div>
-        
         <div class="form-group">
           <label class="required">2. 유형</label>
           <select id="typeSelect" class="save-state" required>
             <option value="" disabled selected>선택해주세요</option>
-            <option value="외래">외래</option><option value="병동">병동</option>
-            <option value="외부">외부</option><option value="직접입력">직접입력</option>
+            <option value="외래">외래</option><option value="병동">병동</option><option value="외부">외부</option><option value="직접입력">직접입력</option>
           </select>
           <input type="text" id="customType" class="save-state" placeholder="유형 직접 입력" style="display:none; margin-top:8px;">
         </div>
-
         <div class="form-group">
           <label class="required">3. 예방내역</label>
           <select id="preventionSelect" class="save-state" required>
             <option value="" disabled selected>선택해주세요</option>
-            <option value="환자동행">환자동행</option><option value="상황출동">상황출동</option>
-            <option value="환자이탈">환자이탈</option><option value="고인이송">고인이송</option>
-            <option value="채혈지원">채혈지원</option><option value="직접입력">직접입력</option>
+            <option value="환자동행">환자동행</option><option value="상황출동">상황출동</option><option value="환자이탈">환자이탈</option><option value="고인이송">고인이송</option><option value="채혈지원">채혈지원</option><option value="직접입력">직접입력</option>
           </select>
           <input type="text" id="customPrevention" class="save-state" placeholder="예방내역 직접 입력" style="display:none; margin-top:8px;">
         </div>
-
         <div class="form-group"><label class="required">4. 근무자</label><input type="text" id="worker1" class="sync-worker save-state" placeholder="예) 홍길동 외 1명" required></div>
         <div class="form-group"><label class="required">5. 사고자</label><input type="text" id="patientInput" class="save-state" placeholder="예) 김OO(69/남)" required></div>
         <div class="form-group"><label class="required">6. 조치결과</label><textarea id="resultInput" class="save-state" placeholder="조치하신 결과를 상세히 적어주세요." required></textarea></div>
-        
         <div class="form-group">
           <label class="required">7. 업무 시간 (시작 ~ 종료)</label>
-          <div class="time-flex">
-            <input type="time" id="startTime1" class="save-state" required><span>~</span><input type="time" id="endTime1" class="save-state" required>
-          </div>
+          <div class="time-flex"><input type="time" id="startTime1" class="save-state" required><span>~</span><input type="time" id="endTime1" class="save-state" required></div>
         </div>
-
-        <div class="form-group">
-          <label>8. 사진 첨부 (선택)</label>
-          <input type="file" id="photo1" accept="image/*">
-          <p style="font-size: 12px; color: #64748b; margin-top: 6px;">* 사진 촬영 중 화면이 닫혀도 작성하신 텍스트는 보존됩니다.</p>
-        </div>
-
+        <div class="form-group"><label>8. 사진 첨부 (선택)</label><input type="file" id="photo1" accept="image/*"><p style="font-size: 12px; color: #64748b; margin-top: 6px;">* 사진 촬영 시 작성 내용 보존</p></div>
         <div id="actionArea1">
           <button type="submit" class="submit-btn">보고 제출하기</button>
           <button type="button" class="cancel-link" onclick="showScreen('homeScreen')">이전 화면으로 돌아가기</button>
         </div>
-        
         <div id="successArea1" style="display:none;">
           <button type="button" class="home-return-btn" onclick="goHomeAndReset(1)">처음 돌아가기</button>
           <button type="button" class="undo-btn" id="undoBtn1">방금 제출한 내용 삭제</button>
@@ -151,14 +135,12 @@
 
     <div id="form2Screen" class="screen">
       <div class="form-header"><h2>미시건 및 소등 점검</h2></div>
-      
       <form id="form2">
         <div class="form-group"><label>1. 날짜 (자동입력)</label><input type="text" class="auto-date" readonly></div>
         <div class="form-group"><label class="required">2. 근무자</label><input type="text" id="worker2" class="sync-worker save-state" placeholder="근무자 이름 입력" required></div>
         <div class="form-group"><label class="required">3. 외래미시건미소등</label><textarea id="content2" class="save-state" placeholder="예) 5층 근전도실 1,2 미시건" required></textarea></div>
         <div class="form-group"><label class="required">4. 확인시간</label><input type="time" id="checkTime2" class="save-state" required></div>
         <div class="form-group"><label>5. 사진 첨부 (선택)</label><input type="file" id="photo2" accept="image/*"></div>
-        
         <div id="actionArea2">
           <button type="submit" class="submit-btn">점검 제출하기</button>
           <button type="button" class="cancel-link" onclick="showScreen('homeScreen')">이전 화면으로 돌아가기</button>
@@ -172,14 +154,12 @@
 
     <div id="form3Screen" class="screen">
       <div class="form-header"><h2>작업 현황 보고</h2></div>
-      
       <form id="form3">
         <div class="form-group"><label>1. 날짜 (자동입력)</label><input type="text" class="auto-date" readonly></div>
         <div class="form-group"><label class="required">2. 근무자</label><input type="text" id="worker3" class="sync-worker save-state" placeholder="근무자 이름 입력" required></div>
         <div class="form-group"><label class="required">3. 부서작업현황</label><textarea id="content3" class="save-state" placeholder="작업하신 상세 내용을 입력해주세요." required></textarea></div>
         <div class="form-group"><label class="required">4. 확인시간</label><input type="time" id="checkTime3" class="save-state" required></div>
         <div class="form-group"><label>5. 사진 첨부 (선택)</label><input type="file" id="photo3" accept="image/*"></div>
-        
         <div id="actionArea3">
           <button type="submit" class="submit-btn">현황 제출하기</button>
           <button type="button" class="cancel-link" onclick="showScreen('homeScreen')">이전 화면으로 돌아가기</button>
@@ -190,16 +170,93 @@
         </div>
       </form>
     </div>
+
+    <div id="form4Screen" class="screen">
+      <div class="form-header">
+        <h2>근태수정</h2>
+        <p style="margin:-15px 0 20px 0; color:#64748b; font-size:14px; font-weight:600;">근무조정 / 변경 / 수정</p>
+      </div>
+      
+      <form id="form4">
+        <div class="form-group"><label class="required">1. 변경 날짜 선택</label><input type="date" id="modDate4" class="save-state" required></div>
+        <div class="form-group"><label class="required">2. 본인이름</label><input type="text" id="worker4" class="sync-worker save-state" placeholder="본인 이름 입력" required></div>
+        
+        <div class="form-group">
+          <label class="required">3. 실코드(근무)</label>
+          <select id="oldCodeSelect4" class="save-state" required>
+            <option value="" disabled selected>선택해주세요</option>
+            <option value="D4">D4</option>
+            <option value="A1">A1</option>
+            <option value="A2">A2</option>
+            <option value="직접입력">직접입력</option>
+          </select>
+          <input type="text" id="customOldCode4" class="save-state" placeholder="실코드 직접 입력" style="display:none; margin-top:8px;">
+        </div>
+
+        <div class="form-group">
+          <label class="required">4. 수정될코드</label>
+          <select id="newCodeSelect4" class="save-state" required>
+            <option value="" disabled selected>선택해주세요</option>
+            <option value="E1">E1</option>
+            <option value="E2">E2</option>
+            <option value="D4">D4</option>
+            <option value="+E1">+E1</option>
+            <option value="+E2">+E2</option>
+            <option value="A1">A1</option>
+            <option value="A2">A2</option>
+            <option value="주간조24H">주간조24H</option>
+            <option value="직접입력">직접입력</option>
+          </select>
+          <input type="text" id="customNewCode4" class="save-state" placeholder="수정될코드 직접 입력" style="display:none; margin-top:8px;">
+        </div>
+
+        <div class="form-group"><label class="required">5. 사유</label><textarea id="reason4" class="save-state" placeholder="변경 사유를 적어주세요." required></textarea></div>
+        
+        <div class="form-group">
+          <label class="required">6. 결재팀장</label>
+          <select id="managerSelect4" class="save-state" required>
+            <option value="" disabled selected>결재팀장 선택</option>
+            <option value="vkorean@s-tec.co.kr">백만호</option>
+            <option value="victory80@s-tec.co.kr">김형진</option>
+            <option value="amazozlove@s-tec.co.kr">한현식</option>
+            <option value="whrudska828@s-tec.co.kr">조경남</option>
+            <option value="임시3@s-tec.co.kr">권기현</option>
+            <option value="임시1@s-tec.co.kr">김태영</option>
+            <option value="임시2@s-tec.co.kr">이석인</option>
+            <option value="son4487@gmail.com ">손경훈주임</option>
+            <option value="ASURADA@s-tec.co.kr">조주현주임</option>
+            <option value="ASURADA@s-tec.co.kr">주임</option>
+          </select>
+          <p style="font-size: 12px; color: var(--primary-color); margin-top: 6px; font-weight:600;">* 선택 시 해당 팀장님께 이메일 알림이 전송됩니다.</p>
+        </div>
+        
+        <div id="actionArea4">
+          <button type="submit" class="submit-btn">수정 결재 올리기</button>
+          <button type="button" class="cancel-link" onclick="showScreen('homeScreen')">이전 화면으로 돌아가기</button>
+        </div>
+        <div id="successArea4" style="display:none;">
+          <button type="button" class="home-return-btn" onclick="goHomeAndReset(4)">처음 돌아가기</button>
+          <button type="button" class="undo-btn" id="undoBtn4">방금 제출한 내용 삭제</button>
+        </div>
+      </form>
+    </div>
+
   </div>
 
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxK9_OtEHMpThIjXP6bUwi5j_cEMoFN9tDsd69qavXceqnq8fxWzJruMYpreuk8dUMS7A/exec';
     
-    let lastUuid1 = null; let lastUuid2 = null; let lastUuid3 = null;
+    let lastUuid1 = null; let lastUuid2 = null; let lastUuid3 = null; let lastUuid4 = null;
 
     function getFormattedDate() {
       const now = new Date(); 
       return `${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}(${['일','월','화','수','목','금','토'][now.getDay()]})`;
+    }
+    function formatCustomDate(rawDateStr) {
+      if(!rawDateStr) return '';
+      const parts = rawDateStr.split('-');
+      const d = new Date(parts[0], parts[1]-1, parts[2]);
+      return `${parts[1]}.${parts[2]}(${['일','월','화','수','목','금','토'][d.getDay()]})`;
     }
     function formatTime(d) { return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
     function getCurrentTime() { return formatTime(new Date()); }
@@ -221,10 +278,7 @@
       
       document.querySelectorAll('.save-state').forEach(el => {
         const savedVal = localStorage.getItem('as_' + el.id);
-        if(savedVal) {
-          el.value = savedVal;
-          if(el.tagName === 'SELECT') el.dispatchEvent(new Event('change'));
-        }
+        if(savedVal) { el.value = savedVal; if(el.tagName === 'SELECT') el.dispatchEvent(new Event('change')); }
         el.addEventListener('input', () => localStorage.setItem('as_' + el.id, el.value));
         el.addEventListener('change', () => localStorage.setItem('as_' + el.id, el.value));
       });
@@ -233,14 +287,16 @@
       if(!document.getElementById('endTime1').value) document.getElementById('endTime1').value = getEndTime();
       if(!document.getElementById('checkTime2').value) document.getElementById('checkTime2').value = getCurrentTime();
       if(!document.getElementById('checkTime3').value) document.getElementById('checkTime3').value = getCurrentTime();
+      
+      if(!document.getElementById('modDate4').value) {
+        const now = new Date();
+        document.getElementById('modDate4').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+      }
     });
 
     document.querySelectorAll('.sync-worker').forEach(input => {
       input.addEventListener('input', function() {
-        document.querySelectorAll('.sync-worker').forEach(el => {
-          el.value = this.value;
-          localStorage.setItem('as_' + el.id, this.value);
-        });
+        document.querySelectorAll('.sync-worker').forEach(el => { el.value = this.value; localStorage.setItem('as_' + el.id, this.value); });
       });
     });
 
@@ -251,24 +307,24 @@
         else { input.style.display = 'none'; input.required = false; input.value = ''; localStorage.removeItem('as_' + inputId); }
       });
     }
+    
+    // 각종 직접입력 연결
     handleDirectInput('typeSelect', 'customType');
     handleDirectInput('preventionSelect', 'customPrevention');
+    handleDirectInput('oldCodeSelect4', 'customOldCode4');
+    handleDirectInput('newCodeSelect4', 'customNewCode4');
 
     function clearAutoSave() {
-      document.querySelectorAll('.save-state').forEach(el => {
-        if(!el.id.includes('worker')) {
-          localStorage.removeItem('as_' + el.id);
-        }
-      });
+      document.querySelectorAll('.save-state').forEach(el => { if(!el.id.includes('worker')) localStorage.removeItem('as_' + el.id); });
     }
 
     async function submitForm(sheetName, dataObj, photoInputId, formNum) {
       document.getElementById('loadingOverlay').style.display = 'flex';
-      const fileInput = document.getElementById(photoInputId);
       
+      const fileInput = document.getElementById(photoInputId);
       const handleFile = () => new Promise((resolve) => {
+        if (!fileInput || !fileInput.files[0]) { resolve(); return; }
         const file = fileInput.files[0];
-        if (!file) { resolve(); return; }
         const reader = new FileReader();
         reader.onload = e => {
           const img = new Image();
@@ -297,6 +353,7 @@
       finally { document.getElementById('loadingOverlay').style.display = 'none'; }
     }
 
+    // 1. 상황보고
     document.getElementById('reportForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       let type = document.getElementById('typeSelect').value; if (type === '직접입력') type = document.getElementById('customType').value;
@@ -306,53 +363,76 @@
       const data = {
         action: 'insert', sheetName: '상황보고', uuid: lastUuid1,
         date: document.querySelectorAll('.auto-date')[0].value,
-        type: type, prevention: prev,
-        worker: document.getElementById('worker1').value,
-        patient: document.getElementById('patientInput').value,
-        resultText: document.getElementById('resultInput').value,
+        type: type, prevention: prev, worker: document.getElementById('worker1').value,
+        patient: document.getElementById('patientInput').value, resultText: document.getElementById('resultInput').value,
         timeRange: `${document.getElementById('startTime1').value}~${document.getElementById('endTime1').value}`
       };
-
       if(await submitForm('상황보고', data, 'photo1', 1)) {
-        this.reset();
-        document.querySelectorAll('.auto-date')[0].value = getFormattedDate();
+        this.reset(); document.querySelectorAll('.auto-date')[0].value = getFormattedDate();
         document.getElementById('startTime1').value = getCurrentTime(); document.getElementById('endTime1').value = getEndTime();
         document.getElementById('worker1').value = localStorage.getItem('as_worker1') || '';
         document.getElementById('customType').style.display = 'none'; document.getElementById('customPrevention').style.display = 'none';
       }
     });
 
+    // 2. 미시건 및 소등
     document.getElementById('form2').addEventListener('submit', async function(e) {
       e.preventDefault(); lastUuid2 = Date.now().toString(36);
       const data = {
         action: 'insert', sheetName: '미시건및소등', uuid: lastUuid2,
-        date: document.querySelectorAll('.auto-date')[1].value,
-        worker: document.getElementById('worker2').value,
-        content: document.getElementById('content2').value,
-        checkTime: document.getElementById('checkTime2').value
+        date: document.querySelectorAll('.auto-date')[1].value, worker: document.getElementById('worker2').value,
+        content: document.getElementById('content2').value, checkTime: document.getElementById('checkTime2').value
       };
       if(await submitForm('미시건및소등', data, 'photo2', 2)) {
-        this.reset();
-        document.querySelectorAll('.auto-date')[1].value = getFormattedDate();
-        document.getElementById('checkTime2').value = getCurrentTime();
-        document.getElementById('worker2').value = localStorage.getItem('as_worker2') || '';
+        this.reset(); document.querySelectorAll('.auto-date')[1].value = getFormattedDate();
+        document.getElementById('checkTime2').value = getCurrentTime(); document.getElementById('worker2').value = localStorage.getItem('as_worker2') || '';
       }
     });
 
+    // 3. 작업현황
     document.getElementById('form3').addEventListener('submit', async function(e) {
       e.preventDefault(); lastUuid3 = Date.now().toString(36);
       const data = {
         action: 'insert', sheetName: '작업현황', uuid: lastUuid3,
-        date: document.querySelectorAll('.auto-date')[2].value,
-        worker: document.getElementById('worker3').value,
-        content: document.getElementById('content3').value,
-        checkTime: document.getElementById('checkTime3').value
+        date: document.querySelectorAll('.auto-date')[2].value, worker: document.getElementById('worker3').value,
+        content: document.getElementById('content3').value, checkTime: document.getElementById('checkTime3').value
       };
       if(await submitForm('작업현황', data, 'photo3', 3)) {
+        this.reset(); document.querySelectorAll('.auto-date')[2].value = getFormattedDate();
+        document.getElementById('checkTime3').value = getCurrentTime(); document.getElementById('worker3').value = localStorage.getItem('as_worker3') || '';
+      }
+    });
+
+    // 4. 근태수정 (★ 업데이트: 드롭다운 + 직접입력 로직 반영 ★)
+    document.getElementById('form4').addEventListener('submit', async function(e) {
+      e.preventDefault(); lastUuid4 = Date.now().toString(36);
+      
+      let finalOldCode = document.getElementById('oldCodeSelect4').value;
+      if (finalOldCode === '직접입력') finalOldCode = document.getElementById('customOldCode4').value;
+
+      let finalNewCode = document.getElementById('newCodeSelect4').value;
+      if (finalNewCode === '직접입력') finalNewCode = document.getElementById('customNewCode4').value;
+
+      const sel = document.getElementById('managerSelect4');
+      const data = {
+        action: 'insert', sheetName: '근태수정', uuid: lastUuid4,
+        date: formatCustomDate(document.getElementById('modDate4').value),
+        worker: document.getElementById('worker4').value,
+        oldCode: finalOldCode,
+        newCode: finalNewCode,
+        reason: document.getElementById('reason4').value,
+        managerEmail: sel.value,
+        managerName: sel.options[sel.selectedIndex].text
+      };
+
+      if(await submitForm('근태수정', data, null, 4)) {
         this.reset();
-        document.querySelectorAll('.auto-date')[2].value = getFormattedDate();
-        document.getElementById('checkTime3').value = getCurrentTime();
-        document.getElementById('worker3').value = localStorage.getItem('as_worker3') || '';
+        document.getElementById('worker4').value = localStorage.getItem('as_worker4') || '';
+        document.getElementById('customOldCode4').style.display = 'none';
+        document.getElementById('customNewCode4').style.display = 'none';
+        // 날짜 다시 오늘로 초기화
+        const now = new Date();
+        document.getElementById('modDate4').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
       }
     });
 
@@ -370,6 +450,7 @@
     document.getElementById('undoBtn1').addEventListener('click', () => handleUndo('상황보고', lastUuid1, 1));
     document.getElementById('undoBtn2').addEventListener('click', () => handleUndo('미시건및소등', lastUuid2, 2));
     document.getElementById('undoBtn3').addEventListener('click', () => handleUndo('작업현황', lastUuid3, 3));
+    document.getElementById('undoBtn4').addEventListener('click', () => handleUndo('근태수정', lastUuid4, 4));
   </script>
 </body>
 </html>
