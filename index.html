@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
-  <meta property="og:title" content="통합 업무 시스템">
-  <meta property="og:description" content="세브란스병원 에스텍시스템 스마트 보고 채널">
+  <meta property="og:title" content="에스텍 차세대시스템">
+  <meta property="og:description" content="신촌 보안업무 스마트보고">
   <meta property="og:image" content="https://tistory1.daumcdn.net/tistory/4488967/skin/images/stecseverance.png">
   <meta property="og:type" content="website">
 
@@ -61,6 +61,19 @@
     .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); backdrop-filter: blur(5px); z-index: 100; display: none; justify-content: center; align-items: center; flex-direction: column; }
     .spinner { border: 4px solid #e2e8f0; width: 45px; height: 45px; border-radius: 50%; border-left-color: var(--primary-color); animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite; margin-bottom: 15px; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* 최종 확인(미리보기) 모달 디자인 */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+    .modal-content { background: var(--white); padding: 25px; border-radius: 16px; width: 85%; max-width: 340px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); animation: fadeSlideUp 0.3s ease-out; }
+    .modal-title { margin: 0 0 15px 0; color: var(--primary-color); font-size: 20px; font-weight: 800; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; text-align: center; }
+    .modal-body { font-size: 14px; color: #334155; margin-bottom: 20px; line-height: 1.7; background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; }
+    .modal-body b { color: var(--text-color); display: inline-block; width: 70px; }
+    .modal-actions { display: flex; gap: 10px; }
+    .modal-btn { flex: 1; padding: 14px; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .modal-btn.cancel { background: #e2e8f0; color: #475569; }
+    .modal-btn.cancel:hover { background: #cbd5e1; }
+    .modal-btn.confirm { background: var(--primary-color); color: var(--white); }
+    .modal-btn.confirm:hover { background: #004d55; }
   </style>
 </head>
 <body>
@@ -104,7 +117,7 @@
             <option value="" disabled selected>선택해주세요</option>
             <option value="외래">외래</option><option value="병동">병동</option><option value="외부">외부</option><option value="직접입력">직접입력</option>
           </select>
-          <input type="text" id="customType" class="save-state" placeholder="유형 직접 입력" style="display:none; margin-top:8px;">
+          <input type="text" id="customType" class="save-state" placeholder="유형 직접 입력" autocomplete="off" style="display:none; margin-top:8px;">
         </div>
         <div class="form-group">
           <label class="required">3. 예방내역</label>
@@ -112,7 +125,7 @@
             <option value="" disabled selected>선택해주세요</option>
             <option value="환자동행">환자동행</option><option value="상황출동">상황출동</option><option value="환자이탈">환자이탈</option><option value="고인이송">고인이송</option><option value="채혈지원">채혈지원</option><option value="직접입력">직접입력</option>
           </select>
-          <input type="text" id="customPrevention" class="save-state" placeholder="예방내역 직접 입력" style="display:none; margin-top:8px;">
+          <input type="text" id="customPrevention" class="save-state" placeholder="예방내역 직접 입력" autocomplete="off" style="display:none; margin-top:8px;">
         </div>
         <div class="form-group"><label class="required">4. 근무자</label><input type="text" id="worker1" class="sync-worker save-state" placeholder="예) 홍길동 외 1명" required></div>
         <div class="form-group"><label class="required">5. 사고자</label><input type="text" id="patientInput" class="save-state" placeholder="예) 김OO(69/남)" required></div>
@@ -185,29 +198,22 @@
           <label class="required">3. 실코드(근무)</label>
           <select id="oldCodeSelect4" class="save-state" required>
             <option value="" disabled selected>선택해주세요</option>
-            <option value="D4">D4</option>
-            <option value="A1">A1</option>
-            <option value="A2">A2</option>
+            <option value="D4">D4</option><option value="A1">A1</option><option value="A2">A2</option>
             <option value="직접입력">직접입력</option>
           </select>
-          <input type="text" id="customOldCode4" class="save-state" placeholder="실코드 직접 입력" style="display:none; margin-top:8px;">
+          <input type="text" id="customOldCode4" class="save-state" placeholder="실코드 직접 입력" autocomplete="off" style="display:none; margin-top:8px;">
         </div>
 
         <div class="form-group">
           <label class="required">4. 수정될코드</label>
           <select id="newCodeSelect4" class="save-state" required>
             <option value="" disabled selected>선택해주세요</option>
-            <option value="E1">E1</option>
-            <option value="E2">E2</option>
-            <option value="D4">D4</option>
-            <option value="+E1">+E1</option>
-            <option value="+E2">+E2</option>
-            <option value="A1">A1</option>
-            <option value="A2">A2</option>
-            <option value="주간조24H">주간조24H</option>
+            <option value="E1">E1</option><option value="E2">E2</option><option value="D4">D4</option>
+            <option value="+E1">+E1</option><option value="+E2">+E2</option><option value="A1">A1</option>
+            <option value="A2">A2</option><option value="주간조24H">주간조24H</option>
             <option value="직접입력">직접입력</option>
           </select>
-          <input type="text" id="customNewCode4" class="save-state" placeholder="수정될코드 직접 입력" style="display:none; margin-top:8px;">
+          <input type="text" id="customNewCode4" class="save-state" placeholder="수정될코드 직접 입력" autocomplete="off" style="display:none; margin-top:8px;">
         </div>
 
         <div class="form-group"><label class="required">5. 사유</label><textarea id="reason4" class="save-state" placeholder="변경 사유를 적어주세요." required></textarea></div>
@@ -222,8 +228,8 @@
             <option value="whrudska828@s-tec.co.kr">조경남</option>
             <option value="임시3@s-tec.co.kr">권기현</option>
             <option value="임시1@s-tec.co.kr">김태영</option>
-            <option value="임시2@s-tec.co.kr">이석인</option>
-            <option value="son4487@gmail.com ">손경훈주임</option>
+            <option value="yiseokin1@naver.com">이석인</option>
+            <option value="son4487@gmail.com">손경훈주임</option>
             <option value="ASURADA@s-tec.co.kr">조주현주임</option>
             <option value="ASURADA@s-tec.co.kr">주임</option>
           </select>
@@ -241,12 +247,25 @@
       </form>
     </div>
 
+    <div id="confirmModal" class="modal-overlay">
+      <div class="modal-content">
+        <h3 class="modal-title">최종 확인</h3>
+        <div id="confirmBody" class="modal-body">
+          </div>
+        <div class="modal-actions">
+          <button class="modal-btn cancel" onclick="closeConfirmModal()">수정하기</button>
+          <button class="modal-btn confirm" onclick="executeSubmitForm4()">최종 올리기</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxK9_OtEHMpThIjXP6bUwi5j_cEMoFN9tDsd69qavXceqnq8fxWzJruMYpreuk8dUMS7A/exec';
     
     let lastUuid1 = null; let lastUuid2 = null; let lastUuid3 = null; let lastUuid4 = null;
+    let pendingForm4Data = null; 
 
     function getFormattedDate() {
       const now = new Date(); 
@@ -308,7 +327,6 @@
       });
     }
     
-    // 각종 직접입력 연결
     handleDirectInput('typeSelect', 'customType');
     handleDirectInput('preventionSelect', 'customPrevention');
     handleDirectInput('oldCodeSelect4', 'customOldCode4');
@@ -321,9 +339,9 @@
     async function submitForm(sheetName, dataObj, photoInputId, formNum) {
       document.getElementById('loadingOverlay').style.display = 'flex';
       
-      const fileInput = document.getElementById(photoInputId);
+      const fileInput = photoInputId ? document.getElementById(photoInputId) : null;
       const handleFile = () => new Promise((resolve) => {
-        if (!fileInput || !fileInput.files[0]) { resolve(); return; }
+        if (!fileInput || !fileInput.files || !fileInput.files[0]) { resolve(); return; }
         const file = fileInput.files[0];
         const reader = new FileReader();
         reader.onload = e => {
@@ -403,9 +421,9 @@
       }
     });
 
-    // 4. 근태수정 (★ 업데이트: 드롭다운 + 직접입력 로직 반영 ★)
-    document.getElementById('form4').addEventListener('submit', async function(e) {
-      e.preventDefault(); lastUuid4 = Date.now().toString(36);
+    // 4. 근태수정
+    document.getElementById('form4').addEventListener('submit', function(e) {
+      e.preventDefault(); 
       
       let finalOldCode = document.getElementById('oldCodeSelect4').value;
       if (finalOldCode === '직접입력') finalOldCode = document.getElementById('customOldCode4').value;
@@ -414,27 +432,52 @@
       if (finalNewCode === '직접입력') finalNewCode = document.getElementById('customNewCode4').value;
 
       const sel = document.getElementById('managerSelect4');
-      const data = {
+      const dateStr = formatCustomDate(document.getElementById('modDate4').value);
+      const workerName = document.getElementById('worker4').value;
+      const reasonTxt = document.getElementById('reason4').value;
+      const managerName = sel.options[sel.selectedIndex].text;
+
+      const confirmHtml = `
+        <b>변경날짜</b> : ${dateStr}<br>
+        <b>본인이름</b> : ${workerName}<br>
+        <b>실코드</b> : ${finalOldCode}<br>
+        <b>수정코드</b> : <span style="color:var(--danger-color); font-weight:bold;">${finalNewCode}</span><br>
+        <b>결재팀장</b> : ${managerName}<br>
+        <b>변경사유</b> : ${reasonTxt}
+      `;
+      document.getElementById('confirmBody').innerHTML = confirmHtml;
+
+      lastUuid4 = Date.now().toString(36);
+      pendingForm4Data = {
         action: 'insert', sheetName: '근태수정', uuid: lastUuid4,
-        date: formatCustomDate(document.getElementById('modDate4').value),
-        worker: document.getElementById('worker4').value,
-        oldCode: finalOldCode,
-        newCode: finalNewCode,
-        reason: document.getElementById('reason4').value,
-        managerEmail: sel.value,
-        managerName: sel.options[sel.selectedIndex].text
+        date: dateStr, worker: workerName, oldCode: finalOldCode,
+        newCode: finalNewCode, reason: reasonTxt,
+        managerEmail: sel.value, managerName: managerName
       };
 
-      if(await submitForm('근태수정', data, null, 4)) {
-        this.reset();
+      document.getElementById('confirmModal').style.display = 'flex';
+    });
+
+    function closeConfirmModal() {
+      document.getElementById('confirmModal').style.display = 'none';
+      pendingForm4Data = null;
+    }
+
+    async function executeSubmitForm4() {
+      document.getElementById('confirmModal').style.display = 'none';
+      if(!pendingForm4Data) return;
+
+      if(await submitForm('근태수정', pendingForm4Data, null, 4)) {
+        document.getElementById('form4').reset();
         document.getElementById('worker4').value = localStorage.getItem('as_worker4') || '';
         document.getElementById('customOldCode4').style.display = 'none';
         document.getElementById('customNewCode4').style.display = 'none';
-        // 날짜 다시 오늘로 초기화
+        
         const now = new Date();
         document.getElementById('modDate4').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
       }
-    });
+      pendingForm4Data = null; 
+    }
 
     async function handleUndo(sheetName, uuid, formNum) {
       if(!confirm('방금 제출한 내용을 삭제하시겠습니까?')) return;
