@@ -11,8 +11,12 @@
 
   <title>통합 업무 관리 시스템</title>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
   <style>
-    :root { --primary-color: #006670; --secondary-color: #008489; --accent-color: #e6f7f8; --text-color: #2c3e50; --input-border: #cbd5e1; --white: #ffffff; --danger-color: #e74c3c; }
+    /* 공통 스타일 (기존 완벽 유지) */
+    :root { --primary-color: #006670; --secondary-color: #008489; --accent-color: #e6f7f8; --text-color: #2c3e50; --input-border: #cbd5e1; --white: #ffffff; --danger-color: #e74c3c; --blue-color: #3498db; }
     
     body, html { margin: 0; padding: 0; height: 100%; font-family: 'Pretendard', sans-serif; background-image: url('https://newsx.ecn.cdn.infralab.net/www.whosaeng.com/imgdata/whosaeng_com/202211/2022112932303587.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-color); display: flex; justify-content: center; align-items: center; }
     
@@ -29,15 +33,19 @@
     .home-header h1 { color: var(--primary-color); font-size: 24px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.5px; }
     .home-header p { color: #64748b; font-size: 13px; margin: 0; font-weight: 500; }
     
+    /* 메뉴 그리드 (5번 버튼 추가 위해 2단 유지, 마지막 버튼 길게) */
     .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .menu-card { background: var(--white); border-top: 4px solid var(--secondary-color); border-radius: 16px; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
     .menu-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0, 102, 112, 0.15); border-top-color: var(--primary-color); }
+    .menu-card.full-width { grid-column: span 2; border-top-color: #f39c12; flex-direction: row; text-align: left; padding: 15px 20px; }
+    .menu-card.full-width .menu-icon { margin-bottom: 0; margin-right: 15px; }
+    
     .menu-icon { font-size: 28px; margin-bottom: 12px; background: var(--accent-color); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
     .menu-text h3 { margin: 0 0 4px 0; color: var(--text-color); font-size: 16px; font-weight: 700; }
     .menu-text p { margin: 0; color: #64748b; font-size: 11px; font-weight: 500; word-break: keep-all; }
 
+    /* 폼 1~4 공통 요소 */
     .form-header h2 { color: var(--primary-color); margin: 0 0 25px 0; font-size: 22px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
-    
     .form-group { margin-bottom: 22px; }
     label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px; color: #334155; }
     .required::after { content: "*"; color: var(--danger-color); margin-left: 4px; }
@@ -49,20 +57,11 @@
     
     .submit-btn { width: 100%; padding: 16px; background-color: var(--primary-color); color: var(--white); border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 5px; transition: 0.3s; box-shadow: 0 4px 12px rgba(0, 102, 112, 0.2); }
     .submit-btn:hover { background-color: #004d55; transform: translateY(-2px); }
-    
     .home-return-btn { width: 100%; padding: 16px; background-color: var(--secondary-color); color: var(--white); border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 5px; transition: 0.3s; box-shadow: 0 4px 12px rgba(0, 132, 137, 0.2); }
-    .home-return-btn:hover { background-color: var(--primary-color); transform: translateY(-2px); }
-
     .undo-btn { width: 100%; padding: 14px; background-color: transparent; color: var(--danger-color); border: 2px solid var(--danger-color); border-radius: 12px; font-size: 15px; font-weight: 700; margin-top: 15px; cursor: pointer; transition: 0.2s; }
-    .undo-btn:hover { background-color: #fef2f2; }
-    
     .cancel-link { width: 100%; padding: 12px; background: none; border: none; color: #64748b; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 5px; text-decoration: underline; }
 
-    .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); backdrop-filter: blur(5px); z-index: 100; display: none; justify-content: center; align-items: center; flex-direction: column; }
-    .spinner { border: 4px solid #e2e8f0; width: 45px; height: 45px; border-radius: 50%; border-left-color: var(--primary-color); animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite; margin-bottom: 15px; }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-
-    /* 최종 확인(미리보기) 모달 디자인 */
+    /* 4번 폼 최종확인 모달 */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
     .modal-content { background: var(--white); padding: 25px; border-radius: 16px; width: 85%; max-width: 340px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); animation: fadeSlideUp 0.3s ease-out; }
     .modal-title { margin: 0 0 15px 0; color: var(--primary-color); font-size: 20px; font-weight: 800; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; text-align: center; }
@@ -71,9 +70,27 @@
     .modal-actions { display: flex; gap: 10px; }
     .modal-btn { flex: 1; padding: 14px; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s; }
     .modal-btn.cancel { background: #e2e8f0; color: #475569; }
-    .modal-btn.cancel:hover { background: #cbd5e1; }
     .modal-btn.confirm { background: var(--primary-color); color: var(--white); }
-    .modal-btn.confirm:hover { background: #004d55; }
+
+    /* 5번 폼(캘린더) 전용 스타일 */
+    .month-select { width: 100%; padding: 14px; border: 1.5px solid var(--primary-color); border-radius: 10px; font-size: 16px; text-align: center; margin-bottom: 10px; background-color: #e6f7f8; color: var(--primary-color); font-weight: 800; cursor: pointer; outline: none; }
+    .save-img-btn { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 8px 15px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; margin: 0 auto 15px auto; width: fit-content; }
+    .capture-area { background: var(--white); padding: 30px 20px 25px 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    .cal-month-title { text-align: center; color: var(--primary-color); font-size: 26px; font-weight: 900; margin: 0 0 10px 0; }
+    .cal-welcome { text-align: center; color: #64748b; font-size: 15px; font-weight: 600; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed #e2e8f0; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .day-cell { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; height: 50px; position: relative; display: flex; align-items: center; justify-content: center; }
+    .day-num { position: absolute; top: 4px; left: 5px; font-size: 10px; color: #64748b; font-weight: 800; }
+    .day-num.sat { color: var(--blue-color); }
+    .day-num.sun { color: var(--danger-color); }
+    .day-code { font-size: 14px; font-weight: 800; }
+    .text-red { color: var(--danger-color); }
+    .text-blue { color: var(--primary-color); }
+
+    /* 로딩 오버레이 */
+    .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); backdrop-filter: blur(5px); z-index: 100; display: none; justify-content: center; align-items: center; flex-direction: column; }
+    .spinner { border: 4px solid #e2e8f0; width: 45px; height: 45px; border-radius: 50%; border-left-color: var(--primary-color); animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite; margin-bottom: 15px; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -83,8 +100,8 @@
     <div id="homeScreen" class="screen active">
       <div class="home-header">
         <div class="logo-wrapper"><img src="https://s-tec.co.kr/images/icon/cyber_03_01.png" alt="로고"></div>
-        <h1>통합 업무 시스템</h1>
-        <p>정확하고 신속한 스마트 보고 채널</p>
+        <h1>에스텍 차세대시스템</h1>
+        <p>신촌 보안업무 스마트보고</p>
       </div>
       
       <div class="menu-grid">
@@ -104,12 +121,16 @@
           <div class="menu-icon">⏰</div>
           <div class="menu-text"><h3>근태 수정</h3><p>근무조정/변경/수정</p></div>
         </div>
+        <div class="menu-card full-width" onclick="showScreen('form5Screen')">
+          <div class="menu-icon">📅</div>
+          <div class="menu-text"><h3>내 근태 확인</h3><p>개인별 스케줄 달력 조회 및 저장</p></div>
+        </div>
       </div>
     </div>
 
     <div id="form1Screen" class="screen">
       <div class="form-header"><h2>상황 보고 작성</h2></div>
-      <form id="reportForm">
+      <form id="reportForm" autocomplete="off">
         <div class="form-group"><label>1. 날짜 (자동입력)</label><input type="text" class="auto-date" readonly></div>
         <div class="form-group">
           <label class="required">2. 유형</label>
@@ -117,7 +138,7 @@
             <option value="" disabled selected>선택해주세요</option>
             <option value="외래">외래</option><option value="병동">병동</option><option value="외부">외부</option><option value="직접입력">직접입력</option>
           </select>
-          <input type="text" id="customType" class="save-state" placeholder="유형 직접 입력" autocomplete="off" style="display:none; margin-top:8px;">
+          <input type="text" id="customType" placeholder="유형 직접 입력" autocomplete="new-password" spellcheck="false" style="display:none; margin-top:8px;">
         </div>
         <div class="form-group">
           <label class="required">3. 예방내역</label>
@@ -125,7 +146,7 @@
             <option value="" disabled selected>선택해주세요</option>
             <option value="환자동행">환자동행</option><option value="상황출동">상황출동</option><option value="환자이탈">환자이탈</option><option value="고인이송">고인이송</option><option value="채혈지원">채혈지원</option><option value="직접입력">직접입력</option>
           </select>
-          <input type="text" id="customPrevention" class="save-state" placeholder="예방내역 직접 입력" autocomplete="off" style="display:none; margin-top:8px;">
+          <input type="text" id="customPrevention" placeholder="예방내역 직접 입력" autocomplete="new-password" spellcheck="false" style="display:none; margin-top:8px;">
         </div>
         <div class="form-group"><label class="required">4. 근무자</label><input type="text" id="worker1" class="sync-worker save-state" placeholder="예) 홍길동 외 1명" required></div>
         <div class="form-group"><label class="required">5. 사고자</label><input type="text" id="patientInput" class="save-state" placeholder="예) 김OO(69/남)" required></div>
@@ -148,7 +169,7 @@
 
     <div id="form2Screen" class="screen">
       <div class="form-header"><h2>미시건 및 소등 점검</h2></div>
-      <form id="form2">
+      <form id="form2" autocomplete="off">
         <div class="form-group"><label>1. 날짜 (자동입력)</label><input type="text" class="auto-date" readonly></div>
         <div class="form-group"><label class="required">2. 근무자</label><input type="text" id="worker2" class="sync-worker save-state" placeholder="근무자 이름 입력" required></div>
         <div class="form-group"><label class="required">3. 외래미시건미소등</label><textarea id="content2" class="save-state" placeholder="예) 5층 근전도실 1,2 미시건" required></textarea></div>
@@ -167,7 +188,7 @@
 
     <div id="form3Screen" class="screen">
       <div class="form-header"><h2>작업 현황 보고</h2></div>
-      <form id="form3">
+      <form id="form3" autocomplete="off">
         <div class="form-group"><label>1. 날짜 (자동입력)</label><input type="text" class="auto-date" readonly></div>
         <div class="form-group"><label class="required">2. 근무자</label><input type="text" id="worker3" class="sync-worker save-state" placeholder="근무자 이름 입력" required></div>
         <div class="form-group"><label class="required">3. 부서작업현황</label><textarea id="content3" class="save-state" placeholder="작업하신 상세 내용을 입력해주세요." required></textarea></div>
@@ -189,8 +210,7 @@
         <h2>근태수정</h2>
         <p style="margin:-15px 0 20px 0; color:#64748b; font-size:14px; font-weight:600;">근무조정 / 변경 / 수정</p>
       </div>
-      
-      <form id="form4">
+      <form id="form4" autocomplete="off">
         <div class="form-group"><label class="required">1. 변경 날짜 선택</label><input type="date" id="modDate4" class="save-state" required></div>
         <div class="form-group"><label class="required">2. 본인이름</label><input type="text" id="worker4" class="sync-worker save-state" placeholder="본인 이름 입력" required></div>
         
@@ -201,7 +221,7 @@
             <option value="D4">D4</option><option value="A1">A1</option><option value="A2">A2</option>
             <option value="직접입력">직접입력</option>
           </select>
-          <input type="text" id="customOldCode4" class="save-state" placeholder="실코드 직접 입력" autocomplete="off" style="display:none; margin-top:8px;">
+          <input type="text" id="customOldCode4" placeholder="실코드 직접 입력" autocomplete="new-password" spellcheck="false" style="display:none; margin-top:8px;">
         </div>
 
         <div class="form-group">
@@ -213,7 +233,7 @@
             <option value="A2">A2</option><option value="주간조24H">주간조24H</option>
             <option value="직접입력">직접입력</option>
           </select>
-          <input type="text" id="customNewCode4" class="save-state" placeholder="수정될코드 직접 입력" autocomplete="off" style="display:none; margin-top:8px;">
+          <input type="text" id="customNewCode4" placeholder="수정될코드 직접 입력" autocomplete="new-password" spellcheck="false" style="display:none; margin-top:8px;">
         </div>
 
         <div class="form-group"><label class="required">5. 사유</label><textarea id="reason4" class="save-state" placeholder="변경 사유를 적어주세요." required></textarea></div>
@@ -233,7 +253,7 @@
             <option value="ASURADA@s-tec.co.kr">조주현주임</option>
             <option value="ASURADA@s-tec.co.kr">주임</option>
           </select>
-          <p style="font-size: 12px; color: var(--primary-color); margin-top: 6px; font-weight:600;">* 선택 시 해당 팀장님께 이메일 알림이 전송됩니다.</p>
+          <p style="font-size: 12px; color: var(--primary-color); margin-top: 6px; font-weight:600;">* 선택 시 이메일 알림 전송</p>
         </div>
         
         <div id="actionArea4">
@@ -250,8 +270,7 @@
     <div id="confirmModal" class="modal-overlay">
       <div class="modal-content">
         <h3 class="modal-title">최종 확인</h3>
-        <div id="confirmBody" class="modal-body">
-          </div>
+        <div id="confirmBody" class="modal-body"></div>
         <div class="modal-actions">
           <button class="modal-btn cancel" onclick="closeConfirmModal()">수정하기</button>
           <button class="modal-btn confirm" onclick="executeSubmitForm4()">최종 올리기</button>
@@ -259,13 +278,44 @@
       </div>
     </div>
 
+    <div id="form5Screen" class="screen">
+      <div class="form-header"><h2>📅 내 근태 확인</h2></div>
+      
+      <div class="form-group">
+        <select id="targetMonth" class="month-select">
+          <option value="26.01">2026년 01월</option><option value="26.02">2026년 02월</option>
+          <option value="26.03">2026년 03월</option><option value="26.04">2026년 04월</option>
+          <option value="26.05">2026년 05월</option><option value="26.06">2026년 06월</option>
+          <option value="26.07">2026년 07월</option><option value="26.08">2026년 08월</option>
+          <option value="26.09">2026년 09월</option><option value="26.10">2026년 10월</option>
+          <option value="26.11">2026년 11월</option><option value="26.12">2026년 12월</option>
+        </select>
+      </div>
+      
+      <div class="form-group"><input type="text" id="workerNameScan" class="sync-worker" placeholder="본인 이름을 입력하세요" autocomplete="off"></div>
+      <button class="submit-btn" onclick="fetchSchedule()">근무 스케줄 조회하기</button>
+      <button type="button" class="cancel-link" onclick="showScreen('homeScreen')">메인으로 돌아가기</button>
+      
+      <div id="calendarResultArea" style="display:none; margin-top:20px; position:relative;">
+        <button class="save-img-btn" onclick="saveCalImage()">📸 사진첩 저장</button>
+        <div id="captureArea" class="capture-area">
+          <div id="calMonthTitle" class="cal-month-title"></div>
+          <div id="calWelcomeMsg" class="cal-welcome"></div>
+          <div id="calendarGrid" class="calendar-grid"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxK9_OtEHMpThIjXP6bUwi5j_cEMoFN9tDsd69qavXceqnq8fxWzJruMYpreuk8dUMS7A/exec';
+    // ★ 1~4번 전송용 앱스 스크립트 주소 (기존 주소)
+    const POST_URL = 'https://script.google.com/macros/s/AKfycbxK9_OtEHMpThIjXP6bUwi5j_cEMoFN9tDsd69qavXceqnq8fxWzJruMYpreuk8dUMS7A/exec';
     
-    let lastUuid1 = null; let lastUuid2 = null; let lastUuid3 = null; let lastUuid4 = null;
-    let pendingForm4Data = null; 
+    // ★ 5번 조회용 앱스 스크립트 주소 (캘린더용)
+    const GET_URL = 'https://script.google.com/macros/s/AKfycbx9sdOJzhQN5FGmjIUubXM02j1PjPgbPlS2k6MMlkYMM35eOe-BJvh9lh10oDJ8wD5L6Q/exec';
+    
+    let lastUuid1 = null; let lastUuid2 = null; let lastUuid3 = null; let lastUuid4 = null; let pendingForm4Data = null; 
 
     function getFormattedDate() {
       const now = new Date(); 
@@ -285,14 +335,17 @@
       document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
       document.getElementById(screenId).classList.add('active');
     }
-
     function goHomeAndReset(formNum) {
       document.getElementById('actionArea' + formNum).style.display = 'block';
       document.getElementById('successArea' + formNum).style.display = 'none';
       showScreen('homeScreen');
     }
 
+    // 초기화 및 자동완성 꼬임 방지
     window.addEventListener('load', () => {
+      localStorage.removeItem('as_customType'); localStorage.removeItem('as_customPrevention');
+      localStorage.removeItem('as_customOldCode4'); localStorage.removeItem('as_customNewCode4');
+
       document.querySelectorAll('.auto-date').forEach(el => el.value = getFormattedDate());
       
       document.querySelectorAll('.save-state').forEach(el => {
@@ -311,6 +364,10 @@
         const now = new Date();
         document.getElementById('modDate4').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
       }
+
+      // 5번 폼 월 세팅
+      const now = new Date();
+      document.getElementById('targetMonth').value = "26." + String(now.getMonth()+1).padStart(2,'0');
     });
 
     document.querySelectorAll('.sync-worker').forEach(input => {
@@ -323,23 +380,21 @@
       document.getElementById(selectId).addEventListener('change', function() {
         const input = document.getElementById(inputId);
         if(this.value === '직접입력') { input.style.display = 'block'; input.required = true; } 
-        else { input.style.display = 'none'; input.required = false; input.value = ''; localStorage.removeItem('as_' + inputId); }
+        else { input.style.display = 'none'; input.required = false; input.value = ''; }
       });
     }
-    
-    handleDirectInput('typeSelect', 'customType');
-    handleDirectInput('preventionSelect', 'customPrevention');
-    handleDirectInput('oldCodeSelect4', 'customOldCode4');
-    handleDirectInput('newCodeSelect4', 'customNewCode4');
+    handleDirectInput('typeSelect', 'customType'); handleDirectInput('preventionSelect', 'customPrevention');
+    handleDirectInput('oldCodeSelect4', 'customOldCode4'); handleDirectInput('newCodeSelect4', 'customNewCode4');
 
     function clearAutoSave() {
       document.querySelectorAll('.save-state').forEach(el => { if(!el.id.includes('worker')) localStorage.removeItem('as_' + el.id); });
     }
 
+    // [전송 공통 함수 (1~4번 용)] - POST_URL 사용
     async function submitForm(sheetName, dataObj, photoInputId, formNum) {
       document.getElementById('loadingOverlay').style.display = 'flex';
-      
       const fileInput = photoInputId ? document.getElementById(photoInputId) : null;
+      
       const handleFile = () => new Promise((resolve) => {
         if (!fileInput || !fileInput.files || !fileInput.files[0]) { resolve(); return; }
         const file = fileInput.files[0];
@@ -352,129 +407,65 @@
             if (w > 1024) { h = Math.round(h * 1024 / w); w = 1024; }
             canvas.width = w; canvas.height = h;
             canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            dataObj.fileData = canvas.toDataURL('image/jpeg', 0.8);
-            dataObj.fileName = file.name; resolve();
+            dataObj.fileData = canvas.toDataURL('image/jpeg', 0.8); dataObj.fileName = file.name; resolve();
           }; img.src = e.target.result;
         }; reader.readAsDataURL(file);
       });
 
       try {
         await handleFile();
-        await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dataObj) });
+        await fetch(POST_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dataObj) });
         alert(sheetName + ' 등록 완료!');
-        
         document.getElementById('actionArea' + formNum).style.display = 'none';
         document.getElementById('successArea' + formNum).style.display = 'block';
-        clearAutoSave();
-        return true;
+        clearAutoSave(); return true;
       } catch (error) { alert('전송 오류가 발생했습니다.'); return false; } 
       finally { document.getElementById('loadingOverlay').style.display = 'none'; }
     }
 
-    // 1. 상황보고
+    // 1~3번 제출 이벤트
     document.getElementById('reportForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      let type = document.getElementById('typeSelect').value; if (type === '직접입력') type = document.getElementById('customType').value;
-      let prev = document.getElementById('preventionSelect').value; if (prev === '직접입력') prev = document.getElementById('customPrevention').value;
-
+      let type = document.getElementById('typeSelect').value; if(type==='직접입력') type = document.getElementById('customType').value;
+      let prev = document.getElementById('preventionSelect').value; if(prev==='직접입력') prev = document.getElementById('customPrevention').value;
       lastUuid1 = Date.now().toString(36);
-      const data = {
-        action: 'insert', sheetName: '상황보고', uuid: lastUuid1,
-        date: document.querySelectorAll('.auto-date')[0].value,
-        type: type, prevention: prev, worker: document.getElementById('worker1').value,
-        patient: document.getElementById('patientInput').value, resultText: document.getElementById('resultInput').value,
-        timeRange: `${document.getElementById('startTime1').value}~${document.getElementById('endTime1').value}`
-      };
-      if(await submitForm('상황보고', data, 'photo1', 1)) {
-        this.reset(); document.querySelectorAll('.auto-date')[0].value = getFormattedDate();
-        document.getElementById('startTime1').value = getCurrentTime(); document.getElementById('endTime1').value = getEndTime();
-        document.getElementById('worker1').value = localStorage.getItem('as_worker1') || '';
-        document.getElementById('customType').style.display = 'none'; document.getElementById('customPrevention').style.display = 'none';
-      }
+      const data = { action: 'insert', sheetName: '상황보고', uuid: lastUuid1, date: document.querySelectorAll('.auto-date')[0].value, type: type, prevention: prev, worker: document.getElementById('worker1').value, patient: document.getElementById('patientInput').value, resultText: document.getElementById('resultInput').value, timeRange: `${document.getElementById('startTime1').value}~${document.getElementById('endTime1').value}` };
+      if(await submitForm('상황보고', data, 'photo1', 1)) { this.reset(); document.querySelectorAll('.auto-date')[0].value = getFormattedDate(); document.getElementById('startTime1').value = getCurrentTime(); document.getElementById('endTime1').value = getEndTime(); document.getElementById('worker1').value = localStorage.getItem('as_worker1')||''; document.getElementById('customType').style.display='none'; document.getElementById('customPrevention').style.display='none'; }
     });
-
-    // 2. 미시건 및 소등
     document.getElementById('form2').addEventListener('submit', async function(e) {
       e.preventDefault(); lastUuid2 = Date.now().toString(36);
-      const data = {
-        action: 'insert', sheetName: '미시건및소등', uuid: lastUuid2,
-        date: document.querySelectorAll('.auto-date')[1].value, worker: document.getElementById('worker2').value,
-        content: document.getElementById('content2').value, checkTime: document.getElementById('checkTime2').value
-      };
-      if(await submitForm('미시건및소등', data, 'photo2', 2)) {
-        this.reset(); document.querySelectorAll('.auto-date')[1].value = getFormattedDate();
-        document.getElementById('checkTime2').value = getCurrentTime(); document.getElementById('worker2').value = localStorage.getItem('as_worker2') || '';
-      }
+      const data = { action: 'insert', sheetName: '미시건및소등', uuid: lastUuid2, date: document.querySelectorAll('.auto-date')[1].value, worker: document.getElementById('worker2').value, content: document.getElementById('content2').value, checkTime: document.getElementById('checkTime2').value };
+      if(await submitForm('미시건및소등', data, 'photo2', 2)) { this.reset(); document.querySelectorAll('.auto-date')[1].value = getFormattedDate(); document.getElementById('checkTime2').value = getCurrentTime(); document.getElementById('worker2').value = localStorage.getItem('as_worker2')||''; }
     });
-
-    // 3. 작업현황
     document.getElementById('form3').addEventListener('submit', async function(e) {
       e.preventDefault(); lastUuid3 = Date.now().toString(36);
-      const data = {
-        action: 'insert', sheetName: '작업현황', uuid: lastUuid3,
-        date: document.querySelectorAll('.auto-date')[2].value, worker: document.getElementById('worker3').value,
-        content: document.getElementById('content3').value, checkTime: document.getElementById('checkTime3').value
-      };
-      if(await submitForm('작업현황', data, 'photo3', 3)) {
-        this.reset(); document.querySelectorAll('.auto-date')[2].value = getFormattedDate();
-        document.getElementById('checkTime3').value = getCurrentTime(); document.getElementById('worker3').value = localStorage.getItem('as_worker3') || '';
-      }
+      const data = { action: 'insert', sheetName: '작업현황', uuid: lastUuid3, date: document.querySelectorAll('.auto-date')[2].value, worker: document.getElementById('worker3').value, content: document.getElementById('content3').value, checkTime: document.getElementById('checkTime3').value };
+      if(await submitForm('작업현황', data, 'photo3', 3)) { this.reset(); document.querySelectorAll('.auto-date')[2].value = getFormattedDate(); document.getElementById('checkTime3').value = getCurrentTime(); document.getElementById('worker3').value = localStorage.getItem('as_worker3')||''; }
     });
 
-    // 4. 근태수정
+    // 4번 근태수정 제출
     document.getElementById('form4').addEventListener('submit', function(e) {
       e.preventDefault(); 
-      
-      let finalOldCode = document.getElementById('oldCodeSelect4').value;
-      if (finalOldCode === '직접입력') finalOldCode = document.getElementById('customOldCode4').value;
-
-      let finalNewCode = document.getElementById('newCodeSelect4').value;
-      if (finalNewCode === '직접입력') finalNewCode = document.getElementById('customNewCode4').value;
-
+      let finalOldCode = document.getElementById('oldCodeSelect4').value; if (finalOldCode === '직접입력') { finalOldCode = document.getElementById('customOldCode4').value; } else { document.getElementById('customOldCode4').value = ''; }
+      let finalNewCode = document.getElementById('newCodeSelect4').value; if (finalNewCode === '직접입력') { finalNewCode = document.getElementById('customNewCode4').value; } else { document.getElementById('customNewCode4').value = ''; }
       const sel = document.getElementById('managerSelect4');
       const dateStr = formatCustomDate(document.getElementById('modDate4').value);
       const workerName = document.getElementById('worker4').value;
       const reasonTxt = document.getElementById('reason4').value;
       const managerName = sel.options[sel.selectedIndex].text;
-
-      const confirmHtml = `
-        <b>변경날짜</b> : ${dateStr}<br>
-        <b>본인이름</b> : ${workerName}<br>
-        <b>실코드</b> : ${finalOldCode}<br>
-        <b>수정코드</b> : <span style="color:var(--danger-color); font-weight:bold;">${finalNewCode}</span><br>
-        <b>결재팀장</b> : ${managerName}<br>
-        <b>변경사유</b> : ${reasonTxt}
-      `;
-      document.getElementById('confirmBody').innerHTML = confirmHtml;
-
+      
+      document.getElementById('confirmBody').innerHTML = `<b>변경날짜</b> : ${dateStr}<br><b>본인이름</b> : ${workerName}<br><b>실코드</b> : ${finalOldCode}<br><b>수정코드</b> : <span style="color:var(--danger-color); font-weight:bold;">${finalNewCode}</span><br><b>결재팀장</b> : ${managerName}<br><b>변경사유</b> : ${reasonTxt}`;
       lastUuid4 = Date.now().toString(36);
-      pendingForm4Data = {
-        action: 'insert', sheetName: '근태수정', uuid: lastUuid4,
-        date: dateStr, worker: workerName, oldCode: finalOldCode,
-        newCode: finalNewCode, reason: reasonTxt,
-        managerEmail: sel.value, managerName: managerName
-      };
-
+      pendingForm4Data = { action: 'insert', sheetName: '근태수정', uuid: lastUuid4, date: dateStr, worker: workerName, oldCode: finalOldCode, newCode: finalNewCode, reason: reasonTxt, managerEmail: sel.value, managerName: managerName };
       document.getElementById('confirmModal').style.display = 'flex';
     });
-
-    function closeConfirmModal() {
-      document.getElementById('confirmModal').style.display = 'none';
-      pendingForm4Data = null;
-    }
-
+    function closeConfirmModal() { document.getElementById('confirmModal').style.display = 'none'; pendingForm4Data = null; }
     async function executeSubmitForm4() {
       document.getElementById('confirmModal').style.display = 'none';
       if(!pendingForm4Data) return;
-
       if(await submitForm('근태수정', pendingForm4Data, null, 4)) {
-        document.getElementById('form4').reset();
-        document.getElementById('worker4').value = localStorage.getItem('as_worker4') || '';
-        document.getElementById('customOldCode4').style.display = 'none';
-        document.getElementById('customNewCode4').style.display = 'none';
-        
-        const now = new Date();
-        document.getElementById('modDate4').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+        document.getElementById('form4').reset(); document.getElementById('worker4').value = localStorage.getItem('as_worker4')||''; document.getElementById('customOldCode4').style.display='none'; document.getElementById('customNewCode4').style.display='none';
+        const now = new Date(); document.getElementById('modDate4').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
       }
       pendingForm4Data = null; 
     }
@@ -482,18 +473,65 @@
     async function handleUndo(sheetName, uuid, formNum) {
       if(!confirm('방금 제출한 내용을 삭제하시겠습니까?')) return;
       document.getElementById('loadingOverlay').style.display = 'flex';
-      try {
-        await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'delete', sheetName: sheetName, uuid: uuid }) });
-        alert('삭제되었습니다.'); 
-        document.getElementById('actionArea' + formNum).style.display = 'block';
-        document.getElementById('successArea' + formNum).style.display = 'none';
-      } catch(e) { alert('오류 발생'); } finally { document.getElementById('loadingOverlay').style.display = 'none'; }
+      try { await fetch(POST_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'delete', sheetName: sheetName, uuid: uuid }) }); alert('삭제되었습니다.'); document.getElementById('actionArea' + formNum).style.display = 'block'; document.getElementById('successArea' + formNum).style.display = 'none'; } 
+      catch(e) { alert('오류 발생'); } finally { document.getElementById('loadingOverlay').style.display = 'none'; }
     }
-    
     document.getElementById('undoBtn1').addEventListener('click', () => handleUndo('상황보고', lastUuid1, 1));
     document.getElementById('undoBtn2').addEventListener('click', () => handleUndo('미시건및소등', lastUuid2, 2));
     document.getElementById('undoBtn3').addEventListener('click', () => handleUndo('작업현황', lastUuid3, 3));
     document.getElementById('undoBtn4').addEventListener('click', () => handleUndo('근태수정', lastUuid4, 4));
+
+    // ★ [5번 전용: 캘린더 조회 함수] - GET_URL 사용 ★
+    async function fetchSchedule() {
+      const name = document.getElementById('workerNameScan').value.trim();
+      const sheetName = document.getElementById('targetMonth').value;
+      if (!name) { alert('이름을 입력해주세요.'); return; }
+
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('calendarResultArea').style.display = 'none';
+
+      try {
+        const response = await fetch(`${GET_URL}?name=${encodeURIComponent(name)}&sheetName=${encodeURIComponent(sheetName)}&t=${Date.now()}`);
+        const data = await response.json();
+        if (data.result === 'success') {
+          drawCalendar(name, data.year, data.month, data.schedule);
+        } else { alert(data.message); }
+      } catch (error) { alert('데이터 조회에 실패했습니다. (인터넷 상태 확인)'); } 
+      finally { document.getElementById('loadingOverlay').style.display = 'none'; }
+    }
+
+    function drawCalendar(name, year, month, scheduleData) {
+      const holidays = ['01-01', '02-16', '02-17', '02-18', '03-01', '05-05', '05-24', '06-06', '08-15', '09-24', '09-25', '09-26', '10-03', '10-09', '12-25'];
+      const standardCodes = ['D4', 'A1', 'A2', 'C1', 'C2', 'B1', 'B2'];
+      
+      document.getElementById('calMonthTitle').innerText = `${month}월 스케줄표`;
+      document.getElementById('calWelcomeMsg').innerHTML = `<span style="color:#333; font-size:16px;">${name}</span> 근무표입니다.`;
+
+      let daysInMonth = new Date(year, month, 0).getDate();
+      let gridHtml = '';
+      for (let i = 0; i < daysInMonth; i++) {
+        let code = scheduleData[i] || ''; let upperCode = code.toUpperCase(); 
+        let dateObj = new Date(year, month - 1, i + 1); let dayOfWeek = dateObj.getDay(); 
+        let dateKey = `${String(month).padStart(2, '0')}-${String(i + 1).padStart(2, '0')}`;
+        let numClass = (dayOfWeek === 0 || holidays.includes(dateKey)) ? 'sun' : (dayOfWeek === 6 ? 'sat' : '');
+        let colorClass = code !== '' ? (standardCodes.includes(upperCode) ? 'text-blue' : 'text-red') : '';
+
+        gridHtml += `<div class="day-cell"><div class="day-num ${numClass}">${i + 1}</div><div class="day-code ${colorClass}">${code}</div></div>`;
+      }
+      document.getElementById('calendarGrid').innerHTML = gridHtml;
+      document.getElementById('calendarResultArea').style.display = 'block';
+    }
+
+    async function saveCalImage() {
+      const captureDiv = document.getElementById('captureArea');
+      const name = document.getElementById('workerNameScan').value.trim();
+      const month = document.getElementById('targetMonth').value.split('.')[1];
+      try {
+        const canvas = await html2canvas(captureDiv, { scale: 2, backgroundColor: '#ffffff' });
+        const link = document.createElement('a'); link.download = `${name}_${month}월_스케줄.png`;
+        link.href = canvas.toDataURL('image/png'); link.click();
+      } catch (e) { alert('사진 저장 실패'); }
+    }
   </script>
 </body>
 </html>
