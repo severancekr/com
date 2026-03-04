@@ -13,7 +13,7 @@
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
   <style>
-    :root { --primary-color: #006670; --secondary-color: #008489; --accent-color: #e6f7f8; --text-color: #2c3e50; --input-border: #cbd5e1; --white: #ffffff; --danger-color: #e74c3c; --blue-color: #3498db; }
+    :root { --primary-color: #006670; --secondary-color: #008489; --accent-color: #e6f7f8; --text-color: #2c3e50; --input-border: #cbd5e1; --white: #ffffff; --danger-color: #e74c3c; --blue-color: #3498db; --orange-color: #f39c12; }
     
     body, html { margin: 0; padding: 0; height: 100%; font-family: 'Pretendard', sans-serif; background-image: url('https://newsx.ecn.cdn.infralab.net/www.whosaeng.com/imgdata/whosaeng_com/202211/2022112932303587.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-color); display: flex; justify-content: center; align-items: center; }
     .app-container { width: 100%; max-width: 420px; height: 95vh; margin: 10px; background-color: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 24px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); overflow: hidden; display: flex; flex-direction: column; position: relative; border: 1px solid rgba(255,255,255,0.5); }
@@ -34,11 +34,16 @@
     .menu-text h3 { margin: 0 0 4px 0; color: var(--text-color); font-size: 16px; font-weight: 700; }
     .menu-text p { margin: 0; color: #64748b; font-size: 11px; font-weight: 500; word-break: keep-all; }
 
-    /* ★ 상단 뒤로가기 버튼 레이아웃 ★ */
-    .form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
-    .form-header h2 { color: var(--primary-color); margin: 0; font-size: 22px; border: none; padding: 0; }
-    .top-back-btn { background: #f1f5f9; color: #64748b; border: none; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.2s; }
+    /* ★ 상단 뒤로가기(❮) 및 ✕ 버튼 분리 디자인 ★ */
+    .form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; position: relative; }
+    .form-header h2 { color: var(--primary-color); margin: 0; font-size: 20px; text-align: center; flex: 1; }
+    .top-back-text { background: none; border: none; font-size: 22px; color: #64748b; cursor: pointer; padding: 0 10px 0 0; transition: 0.2s; font-weight: 900; }
+    .top-back-text:active { color: var(--primary-color); }
+    .top-back-btn { background: #f1f5f9; color: #64748b; border: none; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s; padding: 0; }
     .top-back-btn:active { background: var(--accent-color); color: var(--primary-color); }
+
+    /* ★ 드롭다운 메뉴 스타일 ★ */
+    .family-dropdown { width: 100%; padding: 15px; margin-top: 20px; border: 1.5px solid var(--secondary-color); border-radius: 12px; font-size: 15px; font-weight: 700; color: var(--primary-color); background-color: var(--white); outline: none; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
     .form-group { margin-bottom: 22px; }
     label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px; color: #334155; }
@@ -101,6 +106,10 @@
       </div>
       
       <div class="menu-grid">
+        <div class="menu-card" onclick="location.href='https://severancekr.github.io/-/'">
+          <div class="menu-icon">🏢</div>
+          <div class="menu-text"><h3>당일근무지</h3><p>첫POST, 확인</p></div>
+        </div>
         <div class="menu-card" onclick="showScreen('form1Screen')">
           <div class="menu-icon">📋</div>
           <div class="menu-text"><h3>상황 보고</h3><p>환자동행, 병동 사고</p></div>
@@ -119,211 +128,113 @@
         </div>
         <div class="menu-card" onclick="showScreen('form5Screen')">
           <div class="menu-icon">📅</div>
-          <div class="menu-text"><h3>내 근태 확인</h3><p>개인별 스케줄 달력</p></div>
-        </div>
-        <div class="menu-card" onclick="window.open('https://severancekr.github.io/EGG-DROP/', '_blank')">
-          <div class="menu-icon" style="background:transparent; padding:0;"><img src="https://tistory1.daumcdn.net/tistory/4488967/skin/images/eggdrop.png" alt="에그드랍" style="width:100%; height:100%; object-fit:contain; border-radius:12px;"></div>
-          <div class="menu-text"><h3>패밀리 사이트</h3><p>에그드랍 바로가기</p></div>
+          <div class="menu-text"><h3>한달근태</h3><p>개별스케줄확인</p></div>
         </div>
       </div>
+
+      <select class="family-dropdown" onchange="if(this.value) { window.open(this.value, '_blank'); this.selectedIndex=0; }">
+        <option value="" disabled selected>🌐 패밀리 사이트 바로가기</option>
+        <option value="https://severancekr.github.io/EGG-DROP/">애그드랍 앱</option>
+        <option value="https://scube.s-tec.co.kr/sso/user/login/view">에스텍S-CUBE</option>
+        <option value="https://www.s-tec.co.kr/">에스텍시스템</option>
+        <option value="#">(임시) 추가 사이트 1</option>
+        <option value="#">(임시) 추가 사이트 2</option>
+      </select>
     </div>
 
     <div id="form1Screen" class="screen">
       <div class="form-header">
+        <button type="button" class="top-back-text" onclick="showScreen('homeScreen')">❮</button>
         <h2>상황 보고 작성</h2>
-        <button class="top-back-btn" onclick="showScreen('homeScreen')">✕</button>
+        <button type="button" class="top-back-btn" onclick="showScreen('homeScreen')">✕</button>
       </div>
       <form id="reportForm" autocomplete="off">
         <div class="form-group"><label>1. 날짜 (자동입력)</label><input type="text" class="auto-date" readonly></div>
-        <div class="form-group">
-          <label class="required">2. 유형</label>
-          <select id="typeSelect" class="save-state" required>
-            <option value="" disabled selected>선택해주세요</option>
-            <option value="외래">외래</option><option value="병동">병동</option><option value="외부">외부</option><option value="직접입력">직접입력</option>
-          </select>
-          <input type="text" id="customType" placeholder="유형 직접 입력" autocomplete="new-password" spellcheck="false" style="display:none; margin-top:8px;">
-        </div>
-        <div class="form-group">
-          <label class="required">3. 예방내역</label>
-          <select id="preventionSelect" class="save-state" required>
-            <option value="" disabled selected>선택해주세요</option>
-            <option value="환자동행">환자동행</option><option value="상황출동">상황출동</option><option value="환자이탈">환자이탈</option><option value="고인이송">고인이송</option><option value="채혈지원">채혈지원</option><option value="직접입력">직접입력</option>
-          </select>
-          <input type="text" id="customPrevention" placeholder="예방내역 직접 입력" autocomplete="new-password" spellcheck="false" style="display:none; margin-top:8px;">
-        </div>
+        <div class="form-group"><label class="required">2. 유형</label><select id="typeSelect" class="save-state" required><option value="" disabled selected>선택해주세요</option><option value="외래">외래</option><option value="병동">병동</option><option value="외부">외부</option><option value="직접입력">직접입력</option></select><input type="text" id="customType" placeholder="유형 직접 입력" autocomplete="new-password" style="display:none; margin-top:8px;"></div>
+        <div class="form-group"><label class="required">3. 예방내역</label><select id="preventionSelect" class="save-state" required><option value="" disabled selected>선택해주세요</option><option value="환자동행">환자동행</option><option value="상황출동">상황출동</option><option value="환자이탈">환자이탈</option><option value="고인이송">고인이송</option><option value="채혈지원">채혈지원</option><option value="직접입력">직접입력</option></select><input type="text" id="customPrevention" placeholder="예방내역 직접 입력" autocomplete="new-password" style="display:none; margin-top:8px;"></div>
         <div class="form-group"><label class="required">4. 근무자</label><input type="text" id="worker1" class="sync-worker save-state" placeholder="예) 홍길동 외 1명" required></div>
         <div class="form-group"><label class="required">5. 사고자</label><input type="text" id="patientInput" class="save-state" placeholder="예) 김OO(69/남)" required></div>
         <div class="form-group"><label class="required">6. 조치결과</label><textarea id="resultInput" class="save-state" placeholder="조치하신 결과를 상세히 적어주세요." required></textarea></div>
-        <div class="form-group">
-          <label class="required">7. 업무 시간 (시작 ~ 종료)</label>
-          <div class="time-flex"><input type="time" id="startTime1" class="save-state" required><span>~</span><input type="time" id="endTime1" class="save-state" required></div>
-        </div>
+        <div class="form-group"><label class="required">7. 업무 시간</label><div class="time-flex"><input type="time" id="startTime1" class="save-state" required><span>~</span><input type="time" id="endTime1" class="save-state" required></div></div>
         <div class="form-group"><label>8. 사진 첨부 (다중선택 가능)</label><input type="file" id="photo1" accept="image/*" multiple><p style="font-size: 11px; color: #64748b; margin-top: 6px;">* 여러 장의 사진을 한 번에 선택할 수 있습니다.</p></div>
-        <div id="actionArea1">
-          <button type="submit" class="submit-btn">보고 제출하기</button>
-          <button type="button" class="cancel-link" onclick="showScreen('homeScreen')">이전 화면으로 돌아가기</button>
-        </div>
-        <div id="successArea1" style="display:none;">
-          <button type="button" class="home-return-btn" onclick="goHomeAndReset(1)">처음 돌아가기</button>
-          <button type="button" class="undo-btn" id="undoBtn1">방금 제출한 내용 삭제</button>
-        </div>
+        <div id="actionArea1"><button type="submit" class="submit-btn">보고 제출하기</button></div>
+        <div id="successArea1" style="display:none;"><button type="button" class="home-return-btn" onclick="goHomeAndReset(1)">처음 돌아가기</button><button type="button" class="undo-btn" id="undoBtn1">방금 제출한 내용 삭제</button></div>
       </form>
     </div>
 
     <div id="form2Screen" class="screen">
       <div class="form-header">
+        <button type="button" class="top-back-text" onclick="showScreen('homeScreen')">❮</button>
         <h2>미시건 및 소등 점검</h2>
-        <button class="top-back-btn" onclick="showScreen('homeScreen')">✕</button>
+        <button type="button" class="top-back-btn" onclick="showScreen('homeScreen')">✕</button>
       </div>
       <form id="form2" autocomplete="off">
         <div class="form-group"><label>1. 날짜 (자동입력)</label><input type="text" class="auto-date" readonly></div>
         <div class="form-group"><label class="required">2. 근무자</label><input type="text" id="worker2" class="sync-worker save-state" placeholder="근무자 이름 입력" required></div>
-        <div class="form-group"><label class="required">3. 외래미시건미소등</label><textarea id="content2" class="save-state" placeholder="예) 5층 근전도실 1,2 미시건" required></textarea></div>
+        <div class="form-group"><label class="required">3. 외래미시건미소등</label><textarea id="content2" class="save-state" placeholder="내용을 입력하세요." required></textarea></div>
         <div class="form-group"><label class="required">4. 확인시간</label><input type="time" id="checkTime2" class="save-state" required></div>
-        <div class="form-group"><label>5. 사진 첨부 (다중선택 가능)</label><input type="file" id="photo2" accept="image/*" multiple></div>
-        <div id="actionArea2">
-          <button type="submit" class="submit-btn">점검 제출하기</button>
-          <button type="button" class="cancel-link" onclick="showScreen('homeScreen')">이전 화면으로 돌아가기</button>
-        </div>
-        <div id="successArea2" style="display:none;">
-          <button type="button" class="home-return-btn" onclick="goHomeAndReset(2)">처음 돌아가기</button>
-          <button type="button" class="undo-btn" id="undoBtn2">방금 제출한 내용 삭제</button>
-        </div>
+        <div class="form-group"><label>5. 사진 첨부</label><input type="file" id="photo2" accept="image/*" multiple></div>
+        <div id="actionArea2"><button type="submit" class="submit-btn">점검 제출하기</button></div>
+        <div id="successArea2" style="display:none;"><button type="button" class="home-return-btn" onclick="goHomeAndReset(2)">처음 돌아가기</button><button type="button" class="undo-btn" id="undoBtn2">삭제</button></div>
       </form>
     </div>
 
     <div id="form3Screen" class="screen">
       <div class="form-header">
+        <button type="button" class="top-back-text" onclick="showScreen('homeScreen')">❮</button>
         <h2>작업 현황 보고</h2>
-        <button class="top-back-btn" onclick="showScreen('homeScreen')">✕</button>
+        <button type="button" class="top-back-btn" onclick="showScreen('homeScreen')">✕</button>
       </div>
       <form id="form3" autocomplete="off">
         <div class="form-group"><label>1. 날짜 (자동입력)</label><input type="text" class="auto-date" readonly></div>
         <div class="form-group"><label class="required">2. 근무자</label><input type="text" id="worker3" class="sync-worker save-state" placeholder="근무자 이름 입력" required></div>
-        <div class="form-group"><label class="required">3. 부서작업현황</label><textarea id="content3" class="save-state" placeholder="작업하신 상세 내용을 입력해주세요." required></textarea></div>
+        <div class="form-group"><label class="required">3. 부서작업현황</label><textarea id="content3" class="save-state" placeholder="작업 상세 내용" required></textarea></div>
         <div class="form-group"><label class="required">4. 확인시간</label><input type="time" id="checkTime3" class="save-state" required></div>
-        <div class="form-group"><label>5. 사진 첨부 (다중선택 가능)</label><input type="file" id="photo3" accept="image/*" multiple></div>
-        <div id="actionArea3">
-          <button type="submit" class="submit-btn">현황 제출하기</button>
-          <button type="button" class="cancel-link" onclick="showScreen('homeScreen')">이전 화면으로 돌아가기</button>
-        </div>
-        <div id="successArea3" style="display:none;">
-          <button type="button" class="home-return-btn" onclick="goHomeAndReset(3)">처음 돌아가기</button>
-          <button type="button" class="undo-btn" id="undoBtn3">방금 제출한 내용 삭제</button>
-        </div>
+        <div class="form-group"><label>5. 사진 첨부</label><input type="file" id="photo3" accept="image/*" multiple></div>
+        <div id="actionArea3"><button type="submit" class="submit-btn">현황 제출하기</button></div>
+        <div id="successArea3" style="display:none;"><button type="button" class="home-return-btn" onclick="goHomeAndReset(3)">처음 돌아가기</button><button type="button" class="undo-btn" id="undoBtn3">삭제</button></div>
       </form>
     </div>
 
     <div id="form4Screen" class="screen">
       <div class="form-header">
-        <div style="display:flex; flex-direction:column;">
+        <button type="button" class="top-back-text" onclick="showScreen('homeScreen')">❮</button>
+        <div style="display:flex; flex-direction:column; align-items:center;">
           <h2 style="margin-bottom:2px;">근태수정</h2>
           <span style="color:#64748b; font-size:12px; font-weight:600;">근무조정 / 변경 / 수정</span>
         </div>
-        <button class="top-back-btn" onclick="showScreen('homeScreen')">✕</button>
+        <button type="button" class="top-back-btn" onclick="showScreen('homeScreen')">✕</button>
       </div>
       <form id="form4" autocomplete="off">
         <div class="form-group"><label class="required">1. 변경 날짜 선택</label><input type="date" id="modDate4" class="save-state" required></div>
         <div class="form-group"><label class="required">2. 본인이름</label><input type="text" id="worker4" class="sync-worker save-state" placeholder="본인 이름 입력" required></div>
-        
-        <div class="form-group">
-          <label class="required">3. 실코드(근무)</label>
-          <select id="oldCodeSelect4" class="save-state" required>
-            <option value="" disabled selected>선택해주세요</option>
-            <option value="D4">D4</option><option value="A1">A1</option><option value="A2">A2</option>
-            <option value="직접입력">직접입력</option>
-          </select>
-          <input type="text" id="customOldCode4" placeholder="실코드 직접 입력" autocomplete="new-password" spellcheck="false" style="display:none; margin-top:8px;">
-        </div>
-
-        <div class="form-group">
-          <label class="required">4. 수정될코드</label>
-          <select id="newCodeSelect4" class="save-state" required>
-            <option value="" disabled selected>선택해주세요</option>
-            <option value="E1">E1</option><option value="E2">E2</option><option value="D4">D4</option>
-            <option value="+E1">+E1</option><option value="+E2">+E2</option><option value="A1">A1</option>
-            <option value="A2">A2</option><option value="주간조24H">주간조24H</option>
-            <option value="직접입력">직접입력</option>
-          </select>
-          <input type="text" id="customNewCode4" placeholder="수정될코드 직접 입력" autocomplete="new-password" spellcheck="false" style="display:none; margin-top:8px;">
-        </div>
-
-        <div class="form-group"><label class="required">5. 사유</label><textarea id="reason4" class="save-state" placeholder="변경 사유를 적어주세요." required></textarea></div>
-        
-        <div class="form-group">
-          <label class="required">6. 결재팀장</label>
-          <select id="managerSelect4" class="save-state" required>
-            <option value="" disabled selected>결재팀장 선택</option>
-            <option value="vkorean@s-tec.co.kr">백만호</option>
-            <option value="victory80@s-tec.co.kr">김형진</option>
-            <option value="amazozlove@s-tec.co.kr">한현식</option>
-            <option value="whrudska828@s-tec.co.kr">조경남</option>
-            <option value="kkh93182028@naver.com">권기현</option>
-            <option value="4044441@hanmail.net">김태영</option>
-            <option value="yiseokin1@naver.com">이석인</option>
-            <option value="son4487@gmail.com">손경훈주임</option>
-            <option value="ASURADA@s-tec.co.kr">조주현주임</option>
-            <option value="ASURADA@s-tec.co.kr">주임</option>
-          </select>
-        </div>
-        
-        <div id="actionArea4">
-          <button type="submit" class="submit-btn">수정 결재 올리기</button>
-          <button type="button" class="cancel-link" onclick="showScreen('homeScreen')">이전 화면으로 돌아가기</button>
-        </div>
-        <div id="successArea4" style="display:none;">
-          <button type="button" class="home-return-btn" onclick="goHomeAndReset(4)">처음 돌아가기</button>
-          <button type="button" class="undo-btn" id="undoBtn4">방금 제출한 내용 삭제</button>
-        </div>
+        <div class="form-group"><label class="required">3. 실코드</label><select id="oldCodeSelect4" class="save-state" required><option value="" disabled selected>선택</option><option value="D4">D4</option><option value="A1">A1</option><option value="A2">A2</option><option value="직접입력">직접입력</option></select><input type="text" id="customOldCode4" placeholder="직접 입력" autocomplete="new-password" style="display:none; margin-top:8px;"></div>
+        <div class="form-group"><label class="required">4. 수정될코드</label><select id="newCodeSelect4" class="save-state" required><option value="" disabled selected>선택</option><option value="E1">E1</option><option value="E2">E2</option><option value="D4">D4</option><option value="+E1">+E1</option><option value="+E2">+E2</option><option value="A1">A1</option><option value="A2">A2</option><option value="주간조24H">주간조24H</option><option value="직접입력">직접입력</option></select><input type="text" id="customNewCode4" placeholder="직접 입력" autocomplete="new-password" style="display:none; margin-top:8px;"></div>
+        <div class="form-group"><label class="required">5. 사유</label><textarea id="reason4" class="save-state" placeholder="변경 사유" required></textarea></div>
+        <div class="form-group"><label class="required">6. 결재팀장</label><select id="managerSelect4" class="save-state" required><option value="" disabled selected>선택</option><option value="vkorean@s-tec.co.kr">백만호</option><option value="victory80@s-tec.co.kr">김형진</option><option value="amazozlove@s-tec.co.kr">한현식</option><option value="whrudska828@s-tec.co.kr">조경남</option><option value="kkh93182028@naver.com">권기현</option><option value="4044441@hanmail.net">김태영</option><option value="yiseokin1@naver.com">이석인</option></select></div>
+        <div id="actionArea4"><button type="submit" class="submit-btn">수정 결재 올리기</button></div>
+        <div id="successArea4" style="display:none;"><button type="button" class="home-return-btn" onclick="goHomeAndReset(4)">처음 돌아가기</button><button type="button" class="undo-btn" id="undoBtn4">삭제</button></div>
       </form>
     </div>
 
-    <div id="confirmModal" class="modal-overlay">
-      <div class="modal-content">
-        <h3 class="modal-title">최종 확인</h3>
-        <div id="confirmBody" class="modal-body"></div>
-        <div class="modal-actions">
-          <button class="modal-btn cancel" onclick="closeConfirmModal()">수정하기</button>
-          <button class="modal-btn confirm" onclick="executeSubmitForm4()">최종 올리기</button>
-        </div>
-      </div>
-    </div>
+    <div id="confirmModal" class="modal-overlay"><div class="modal-content"><h3 class="modal-title">최종 확인</h3><div id="confirmBody" class="modal-body"></div><div class="modal-actions"><button class="modal-btn cancel" onclick="closeConfirmModal()">수정</button><button class="modal-btn confirm" onclick="executeSubmitForm4()">올리기</button></div></div></div>
 
     <div id="form5Screen" class="screen">
       <div class="form-header">
-        <h2>📅 내 근태 확인</h2>
-        <button class="top-back-btn" onclick="showScreen('homeScreen')">✕</button>
+        <button type="button" class="top-back-text" onclick="showScreen('homeScreen')">❮</button>
+        <h2>📅 한달근태</h2>
+        <button type="button" class="top-back-btn" onclick="showScreen('homeScreen')">✕</button>
       </div>
-      
-      <div class="workplace-group">
-        <button type="button" class="wp-btn active" onclick="selectWorkplace('본관', this)">본관</button>
-        <button type="button" class="wp-btn" onclick="selectWorkplace('전문병원', this)">전문병원</button>
-        <button type="button" class="wp-btn" onclick="selectWorkplace('암병원', this)">암병원</button>
-      </div>
+      <div class="workplace-group"><button type="button" class="wp-btn active" onclick="selectWorkplace('본관', this)">본관</button><button type="button" class="wp-btn" onclick="selectWorkplace('전문병원', this)">전문병원</button><button type="button" class="wp-btn" onclick="selectWorkplace('암병원', this)">암병원</button></div>
       <input type="hidden" id="selectedWorkplace" value="본관">
-
-      <div class="form-group">
-        <select id="targetMonth" class="month-select">
-          <option value="26.01">2026년 01월</option><option value="26.02">2026년 02월</option>
-          <option value="26.03">2026년 03월</option><option value="26.04">2026년 04월</option>
-          <option value="26.05">2026년 05월</option><option value="26.06">2026년 06월</option>
-          <option value="26.07">2026년 07월</option><option value="26.08">2026년 08월</option>
-          <option value="26.09">2026년 09월</option><option value="26.10">2026년 10월</option>
-          <option value="26.11">2026년 11월</option><option value="26.12">2026년 12월</option>
-        </select>
-      </div>
-      
+      <div class="form-group"><select id="targetMonth" class="month-select"><option value="26.01">2026년 01월</option><option value="26.02">2026년 02월</option><option value="26.03">2026년 03월</option><option value="26.04">2026년 04월</option><option value="26.05">2026년 05월</option><option value="26.06">2026년 06월</option><option value="26.07">2026년 07월</option><option value="26.08">2026년 08월</option><option value="26.09">2026년 09월</option><option value="26.10">2026년 10월</option><option value="26.11">2026년 11월</option><option value="26.12">2026년 12월</option></select></div>
       <div class="form-group"><input type="text" id="workerNameScan" class="sync-worker" placeholder="본인 이름을 입력하세요" autocomplete="off"></div>
+      
       <button class="submit-btn" onclick="fetchSchedule()">근무 스케줄 조회하기</button>
-      <button type="button" class="cancel-link" onclick="showScreen('homeScreen')">메인으로 돌아가기</button>
       
       <div id="calendarResultArea" style="display:none; margin-top:20px; position:relative;">
         <button class="save-img-btn" onclick="saveCalImage()">📸 사진첩 저장</button>
-        <div id="captureArea" class="capture-area">
-          <div id="calMonthTitle" class="cal-month-title"></div>
-          <div id="calWelcomeMsg" class="cal-welcome"></div>
-          <div id="calendarGrid" class="calendar-grid"></div>
-        </div>
+        <div id="captureArea" class="capture-area"><div id="calMonthTitle" class="cal-month-title"></div><div id="calWelcomeMsg" class="cal-welcome"></div><div id="calendarGrid" class="calendar-grid"></div></div>
       </div>
     </div>
 
@@ -333,229 +244,86 @@
     const POST_URL = 'https://script.google.com/macros/s/AKfycbxK9_OtEHMpThIjXP6bUwi5j_cEMoFN9tDsd69qavXceqnq8fxWzJruMYpreuk8dUMS7A/exec';
     const GET_URL = 'https://script.google.com/macros/s/AKfycbx9sdOJzhQN5FGmjIUubXM02j1PjPgbPlS2k6MMlkYMM35eOe-BJvh9lh10oDJ8wD5L6Q/exec';
     
-    let lastUuid1 = null; let lastUuid2 = null; let lastUuid3 = null; let lastUuid4 = null; let pendingForm4Data = null; 
+    let lastUuid1, lastUuid2, lastUuid3, lastUuid4, pendingForm4Data;
 
-    function getFormattedDate() {
-      const now = new Date(); 
-      return `${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}(${['일','월','화','수','목','금','토'][now.getDay()]})`;
-    }
-    function formatCustomDate(rawDateStr) {
-      if(!rawDateStr) return '';
-      const parts = rawDateStr.split('-');
-      const d = new Date(parts[0], parts[1]-1, parts[2]);
-      return `${parts[1]}.${parts[2]}(${['일','월','화','수','목','금','토'][d.getDay()]})`;
-    }
+    function getFormattedDate() { const now = new Date(); return `${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}(${['일','월','화','수','목','금','토'][now.getDay()]})`; }
+    function formatCustomDate(rawDateStr) { if(!rawDateStr) return ''; const parts = rawDateStr.split('-'); const d = new Date(parts[0], parts[1]-1, parts[2]); return `${parts[1]}.${parts[2]}(${['일','월','화','수','목','금','토'][d.getDay()]})`; }
     function formatTime(d) { return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
     function getCurrentTime() { return formatTime(new Date()); }
     function getEndTime() { const d = new Date(); d.setMinutes(d.getMinutes() + 15); return formatTime(d); }
 
-    function showScreen(screenId) {
-      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-      document.getElementById(screenId).classList.add('active');
-      window.scrollTo(0, 0); // 새 화면 로드 시 상단으로 이동
-    }
-    function goHomeAndReset(formNum) {
-      document.getElementById('actionArea' + formNum).style.display = 'block';
-      document.getElementById('successArea' + formNum).style.display = 'none';
-      showScreen('homeScreen');
-    }
+    function showScreen(screenId) { document.querySelectorAll('.screen').forEach(el => el.classList.remove('active')); document.getElementById(screenId).classList.add('active'); window.scrollTo(0, 0); }
+    function goHomeAndReset(formNum) { document.getElementById('actionArea' + formNum).style.display = 'block'; document.getElementById('successArea' + formNum).style.display = 'none'; showScreen('homeScreen'); }
 
     window.addEventListener('load', () => {
       localStorage.removeItem('as_customType'); localStorage.removeItem('as_customPrevention');
       localStorage.removeItem('as_customOldCode4'); localStorage.removeItem('as_customNewCode4');
       document.querySelectorAll('.auto-date').forEach(el => el.value = getFormattedDate());
-      document.querySelectorAll('.save-state').forEach(el => {
-        const savedVal = localStorage.getItem('as_' + el.id);
-        if(savedVal) { el.value = savedVal; if(el.tagName === 'SELECT') el.dispatchEvent(new Event('change')); }
-        el.addEventListener('input', () => localStorage.setItem('as_' + el.id, el.value));
-        el.addEventListener('change', () => localStorage.setItem('as_' + el.id, el.value));
-      });
+      document.querySelectorAll('.save-state').forEach(el => { const savedVal = localStorage.getItem('as_' + el.id); if(savedVal) { el.value = savedVal; if(el.tagName === 'SELECT') el.dispatchEvent(new Event('change')); } el.addEventListener('input', () => localStorage.setItem('as_' + el.id, el.value)); el.addEventListener('change', () => localStorage.setItem('as_' + el.id, el.value)); });
       if(!document.getElementById('startTime1').value) document.getElementById('startTime1').value = getCurrentTime();
       if(!document.getElementById('endTime1').value) document.getElementById('endTime1').value = getEndTime();
       if(!document.getElementById('checkTime2').value) document.getElementById('checkTime2').value = getCurrentTime();
       if(!document.getElementById('checkTime3').value) document.getElementById('checkTime3').value = getCurrentTime();
-      if(!document.getElementById('modDate4').value) {
-        const now = new Date();
-        document.getElementById('modDate4').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-      }
-      const now = new Date();
-      document.getElementById('targetMonth').value = "26." + String(now.getMonth()+1).padStart(2,'0');
+      if(!document.getElementById('modDate4').value) { const now = new Date(); document.getElementById('modDate4').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`; }
+      const now = new Date(); document.getElementById('targetMonth').value = "26." + String(now.getMonth()+1).padStart(2,'0');
     });
 
-    document.querySelectorAll('.sync-worker').forEach(input => {
-      input.addEventListener('input', function() {
-        document.querySelectorAll('.sync-worker').forEach(el => { el.value = this.value; localStorage.setItem('as_' + el.id, this.value); });
-      });
-    });
+    document.querySelectorAll('.sync-worker').forEach(input => { input.addEventListener('input', function() { document.querySelectorAll('.sync-worker').forEach(el => { el.value = this.value; localStorage.setItem('as_' + el.id, this.value); }); }); });
 
-    function handleDirectInput(selectId, inputId) {
-      document.getElementById(selectId).addEventListener('change', function() {
-        const input = document.getElementById(inputId);
-        if(this.value === '직접입력') { input.style.display = 'block'; input.required = true; } 
-        else { input.style.display = 'none'; input.required = false; input.value = ''; }
-      });
-    }
-    handleDirectInput('typeSelect', 'customType'); handleDirectInput('preventionSelect', 'customPrevention');
-    handleDirectInput('oldCodeSelect4', 'customOldCode4'); handleDirectInput('newCodeSelect4', 'customNewCode4');
+    function handleDirectInput(selectId, inputId) { document.getElementById(selectId).addEventListener('change', function() { const input = document.getElementById(inputId); if(this.value === '직접입력') { input.style.display = 'block'; input.required = true; } else { input.style.display = 'none'; input.required = false; input.value = ''; } }); }
+    handleDirectInput('typeSelect', 'customType'); handleDirectInput('preventionSelect', 'customPrevention'); handleDirectInput('oldCodeSelect4', 'customOldCode4'); handleDirectInput('newCodeSelect4', 'customNewCode4');
 
-    function clearAutoSave() {
-      document.querySelectorAll('.save-state').forEach(el => { if(!el.id.includes('worker')) localStorage.removeItem('as_' + el.id); });
-    }
-
-    // ★ 멀티 파일 처리 로직 (1장만 대표로 올리되 기록은 유지) ★
     async function submitForm(sheetName, dataObj, photoInputId, formNum) {
       document.getElementById('loadingOverlay').style.display = 'flex';
       const fileInput = photoInputId ? document.getElementById(photoInputId) : null;
-      
       const handleFile = () => new Promise((resolve) => {
         if (!fileInput || !fileInput.files || !fileInput.files[0]) { resolve(); return; }
-        // 여러 장 중 첫 번째 사진을 대표로 업로드
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-        reader.onload = e => {
-          const img = new Image();
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            let w = img.width, h = img.height;
-            if (w > 1024) { h = Math.round(h * 1024 / w); w = 1024; }
-            canvas.width = w; canvas.height = h;
-            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            dataObj.fileData = canvas.toDataURL('image/jpeg', 0.8); 
-            // 시트에는 파일 이름 뒤에 "(외 X장)" 표시 추가
-            dataObj.fileName = fileInput.files.length > 1 ? `${file.name} (외 ${fileInput.files.length - 1}장)` : file.name;
-            resolve();
-          }; img.src = e.target.result;
-        }; reader.readAsDataURL(file);
+        const file = fileInput.files[0]; const reader = new FileReader();
+        reader.onload = e => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); let w = img.width, h = img.height; if (w > 1024) { h = Math.round(h * 1024 / w); w = 1024; } canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h); dataObj.fileData = canvas.toDataURL('image/jpeg', 0.8); dataObj.fileName = fileInput.files.length > 1 ? `${file.name} (외 ${fileInput.files.length - 1}장)` : file.name; resolve(); }; img.src = e.target.result; }; reader.readAsDataURL(file);
       });
-
-      try {
-        await handleFile();
-        await fetch(POST_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dataObj) });
-        alert(sheetName + ' 등록 완료!');
-        document.getElementById('actionArea' + formNum).style.display = 'none';
-        document.getElementById('successArea' + formNum).style.display = 'block';
-        clearAutoSave(); return true;
-      } catch (error) { alert('전송 오류가 발생했습니다.'); return false; } 
-      finally { document.getElementById('loadingOverlay').style.display = 'none'; }
+      try { await handleFile(); await fetch(POST_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dataObj) }); alert(sheetName + ' 등록 완료!'); document.getElementById('actionArea' + formNum).style.display = 'none'; document.getElementById('successArea' + formNum).style.display = 'block'; return true; } 
+      catch (error) { alert('전송 오류'); return false; } finally { document.getElementById('loadingOverlay').style.display = 'none'; }
     }
 
-    document.getElementById('reportForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      let type = document.getElementById('typeSelect').value; if(type==='직접입력') type = document.getElementById('customType').value;
-      let prev = document.getElementById('preventionSelect').value; if(prev==='직접입력') prev = document.getElementById('customPrevention').value;
-      lastUuid1 = Date.now().toString(36);
-      const data = { action: 'insert', sheetName: '상황보고', uuid: lastUuid1, date: document.querySelectorAll('.auto-date')[0].value, type: type, prevention: prev, worker: document.getElementById('worker1').value, patient: document.getElementById('patientInput').value, resultText: document.getElementById('resultInput').value, timeRange: `${document.getElementById('startTime1').value}~${document.getElementById('endTime1').value}` };
-      if(await submitForm('상황보고', data, 'photo1', 1)) { this.reset(); document.querySelectorAll('.auto-date')[0].value = getFormattedDate(); document.getElementById('startTime1').value = getCurrentTime(); document.getElementById('endTime1').value = getEndTime(); document.getElementById('worker1').value = localStorage.getItem('as_worker1')||''; document.getElementById('customType').style.display='none'; document.getElementById('customPrevention').style.display='none'; }
-    });
-    document.getElementById('form2').addEventListener('submit', async function(e) {
-      e.preventDefault(); lastUuid2 = Date.now().toString(36);
-      const data = { action: 'insert', sheetName: '미시건및소등', uuid: lastUuid2, date: document.querySelectorAll('.auto-date')[1].value, worker: document.getElementById('worker2').value, content: document.getElementById('content2').value, checkTime: document.getElementById('checkTime2').value };
-      if(await submitForm('미시건및소등', data, 'photo2', 2)) { this.reset(); document.querySelectorAll('.auto-date')[1].value = getFormattedDate(); document.getElementById('checkTime2').value = getCurrentTime(); document.getElementById('worker2').value = localStorage.getItem('as_worker2')||''; }
-    });
-    document.getElementById('form3').addEventListener('submit', async function(e) {
-      e.preventDefault(); lastUuid3 = Date.now().toString(36);
-      const data = { action: 'insert', sheetName: '작업현황', uuid: lastUuid3, date: document.querySelectorAll('.auto-date')[2].value, worker: document.getElementById('worker3').value, content: document.getElementById('content3').value, checkTime: document.getElementById('checkTime3').value };
-      if(await submitForm('작업현황', data, 'photo3', 3)) { this.reset(); document.querySelectorAll('.auto-date')[2].value = getFormattedDate(); document.getElementById('checkTime3').value = getCurrentTime(); document.getElementById('worker3').value = localStorage.getItem('as_worker3')||''; }
-    });
+    document.getElementById('reportForm').addEventListener('submit', async function(e) { e.preventDefault(); let type = document.getElementById('typeSelect').value; if(type==='직접입력') type = document.getElementById('customType').value; let prev = document.getElementById('preventionSelect').value; if(prev==='직접입력') prev = document.getElementById('customPrevention').value; lastUuid1 = Date.now().toString(36); const data = { action: 'insert', sheetName: '상황보고', uuid: lastUuid1, date: document.querySelectorAll('.auto-date')[0].value, type: type, prevention: prev, worker: document.getElementById('worker1').value, patient: document.getElementById('patientInput').value, resultText: document.getElementById('resultInput').value, timeRange: `${document.getElementById('startTime1').value}~${document.getElementById('endTime1').value}` }; if(await submitForm('상황보고', data, 'photo1', 1)) { this.reset(); document.querySelectorAll('.auto-date')[0].value = getFormattedDate(); document.getElementById('startTime1').value = getCurrentTime(); document.getElementById('endTime1').value = getEndTime(); document.getElementById('worker1').value = localStorage.getItem('as_worker1')||''; } });
+    document.getElementById('form2').addEventListener('submit', async function(e) { e.preventDefault(); lastUuid2 = Date.now().toString(36); const data = { action: 'insert', sheetName: '미시건및소등', uuid: lastUuid2, date: document.querySelectorAll('.auto-date')[1].value, worker: document.getElementById('worker2').value, content: document.getElementById('content2').value, checkTime: document.getElementById('checkTime2').value }; if(await submitForm('미시건및소등', data, 'photo2', 2)) { this.reset(); document.querySelectorAll('.auto-date')[1].value = getFormattedDate(); document.getElementById('worker2').value = localStorage.getItem('as_worker2')||''; } });
+    document.getElementById('form3').addEventListener('submit', async function(e) { e.preventDefault(); lastUuid3 = Date.now().toString(36); const data = { action: 'insert', sheetName: '작업현황', uuid: lastUuid3, date: document.querySelectorAll('.auto-date')[2].value, worker: document.getElementById('worker3').value, content: document.getElementById('content3').value, checkTime: document.getElementById('checkTime3').value }; if(await submitForm('작업현황', data, 'photo3', 3)) { this.reset(); document.querySelectorAll('.auto-date')[2].value = getFormattedDate(); document.getElementById('worker3').value = localStorage.getItem('as_worker3')||''; } });
 
-    document.getElementById('form4').addEventListener('submit', function(e) {
-      e.preventDefault(); 
-      let finalOldCode = document.getElementById('oldCodeSelect4').value; if (finalOldCode === '직접입력') { finalOldCode = document.getElementById('customOldCode4').value; } else { document.getElementById('customOldCode4').value = ''; }
-      let finalNewCode = document.getElementById('newCodeSelect4').value; if (finalNewCode === '직접입력') { finalNewCode = document.getElementById('customNewCode4').value; } else { document.getElementById('customNewCode4').value = ''; }
-      const sel = document.getElementById('managerSelect4');
-      const dateStr = formatCustomDate(document.getElementById('modDate4').value);
-      const workerName = document.getElementById('worker4').value;
-      const reasonTxt = document.getElementById('reason4').value;
-      const managerName = sel.options[sel.selectedIndex].text;
-      document.getElementById('confirmBody').innerHTML = `<b>변경날짜</b> : ${dateStr}<br><b>본인이름</b> : ${workerName}<br><b>실코드</b> : ${finalOldCode}<br><b>수정코드</b> : <span style="color:var(--danger-color); font-weight:bold;">${finalNewCode}</span><br><b>결재팀장</b> : ${managerName}<br><b>변경사유</b> : ${reasonTxt}`;
-      lastUuid4 = Date.now().toString(36);
-      pendingForm4Data = { action: 'insert', sheetName: '근태수정', uuid: lastUuid4, date: dateStr, worker: workerName, oldCode: finalOldCode, newCode: finalNewCode, reason: reasonTxt, managerEmail: sel.value, managerName: managerName };
-      document.getElementById('confirmModal').style.display = 'flex';
-    });
+    document.getElementById('form4').addEventListener('submit', function(e) { e.preventDefault(); let fO = document.getElementById('oldCodeSelect4').value; if (fO === '직접입력') fO = document.getElementById('customOldCode4').value; let fN = document.getElementById('newCodeSelect4').value; if (fN === '직접입력') fN = document.getElementById('customNewCode4').value; const sel = document.getElementById('managerSelect4'); const dateStr = formatCustomDate(document.getElementById('modDate4').value); const workerName = document.getElementById('worker4').value; const reasonTxt = document.getElementById('reason4').value; const managerName = sel.options[sel.selectedIndex].text; document.getElementById('confirmBody').innerHTML = `<b>변경날짜</b> : ${dateStr}<br><b>본인이름</b> : ${workerName}<br><b>실코드</b> : ${fO}<br><b>수정코드</b> : <span style="color:var(--danger-color); font-weight:bold;">${fN}</span><br><b>결재팀장</b> : ${managerName}<br><b>변경사유</b> : ${reasonTxt}`; lastUuid4 = Date.now().toString(36); pendingForm4Data = { action: 'insert', sheetName: '근태수정', uuid: lastUuid4, date: dateStr, worker: workerName, oldCode: fO, newCode: fN, reason: reasonTxt, managerEmail: sel.value, managerName: managerName }; document.getElementById('confirmModal').style.display = 'flex'; });
     function closeConfirmModal() { document.getElementById('confirmModal').style.display = 'none'; pendingForm4Data = null; }
-    async function executeSubmitForm4() {
-      document.getElementById('confirmModal').style.display = 'none';
-      if(!pendingForm4Data) return;
-      if(await submitForm('근태수정', pendingForm4Data, null, 4)) {
-        document.getElementById('form4').reset(); document.getElementById('worker4').value = localStorage.getItem('as_worker4')||''; document.getElementById('customOldCode4').style.display='none'; document.getElementById('customNewCode4').style.display='none';
-        const now = new Date(); document.getElementById('modDate4').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-      }
-      pendingForm4Data = null; 
-    }
+    async function executeSubmitForm4() { document.getElementById('confirmModal').style.display = 'none'; if(!pendingForm4Data) return; if(await submitForm('근태수정', pendingForm4Data, null, 4)) { document.getElementById('form4').reset(); document.getElementById('worker4').value = localStorage.getItem('as_worker4')||''; const now = new Date(); document.getElementById('modDate4').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`; } pendingForm4Data = null; }
 
-    async function handleUndo(sheetName, uuid, formNum) {
-      if(!confirm('방금 제출한 내용을 삭제하시겠습니까?')) return;
-      document.getElementById('loadingOverlay').style.display = 'flex';
-      try { await fetch(POST_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'delete', sheetName: sheetName, uuid: uuid }) }); alert('삭제되었습니다.'); document.getElementById('actionArea' + formNum).style.display = 'block'; document.getElementById('successArea' + formNum).style.display = 'none'; } 
-      catch(e) { alert('오류 발생'); } finally { document.getElementById('loadingOverlay').style.display = 'none'; }
-    }
+    async function handleUndo(sheetName, uuid, formNum) { if(!confirm('삭제하시겠습니까?')) return; document.getElementById('loadingOverlay').style.display = 'flex'; try { await fetch(POST_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'delete', sheetName: sheetName, uuid: uuid }) }); alert('삭제됨'); document.getElementById('actionArea' + formNum).style.display = 'block'; document.getElementById('successArea' + formNum).style.display = 'none'; } catch(e) { alert('오류'); } finally { document.getElementById('loadingOverlay').style.display = 'none'; } }
     document.getElementById('undoBtn1').addEventListener('click', () => handleUndo('상황보고', lastUuid1, 1));
     document.getElementById('undoBtn2').addEventListener('click', () => handleUndo('미시건및소등', lastUuid2, 2));
     document.getElementById('undoBtn3').addEventListener('click', () => handleUndo('작업현황', lastUuid3, 3));
     document.getElementById('undoBtn4').addEventListener('click', () => handleUndo('근태수정', lastUuid4, 4));
 
-    function selectWorkplace(wp, btnElement) {
-      document.getElementById('selectedWorkplace').value = wp;
-      const btns = document.querySelectorAll('.wp-btn');
-      btns.forEach(btn => btn.classList.remove('active'));
-      btnElement.classList.add('active');
-    }
-
-    async function fetchSchedule() {
-      const name = document.getElementById('workerNameScan').value.trim();
-      const sheetName = document.getElementById('targetMonth').value;
-      const workplace = document.getElementById('selectedWorkplace').value;
-      if (!name) { alert('이름을 입력해주세요.'); return; }
-      document.getElementById('loadingOverlay').style.display = 'flex';
-      document.getElementById('calendarResultArea').style.display = 'none';
-      try {
-        const response = await fetch(`${GET_URL}?name=${encodeURIComponent(name)}&sheetName=${encodeURIComponent(sheetName)}&workplace=${encodeURIComponent(workplace)}&t=${Date.now()}`);
-        const data = await response.json();
-        if (data.result === 'success') { drawCalendar(name, data.year, data.month, data.schedule); } 
-        else { alert(data.message); }
-      } catch (error) { alert('데이터 조회에 실패했습니다.'); } 
-      finally { document.getElementById('loadingOverlay').style.display = 'none'; }
-    }
+    function selectWorkplace(wp, btnElement) { document.getElementById('selectedWorkplace').value = wp; const btns = document.querySelectorAll('.wp-btn'); btns.forEach(btn => btn.classList.remove('active')); btnElement.classList.add('active'); }
+    async function fetchSchedule() { const name = document.getElementById('workerNameScan').value.trim(); const sheetName = document.getElementById('targetMonth').value; const workplace = document.getElementById('selectedWorkplace').value; if (!name) { alert('이름 입력'); return; } document.getElementById('loadingOverlay').style.display = 'flex'; document.getElementById('calendarResultArea').style.display = 'none'; try { const response = await fetch(`${GET_URL}?name=${encodeURIComponent(name)}&sheetName=${encodeURIComponent(sheetName)}&workplace=${encodeURIComponent(workplace)}&t=${Date.now()}`); const data = await response.json(); if (data.result === 'success') { drawCalendar(name, data.year, data.month, data.schedule); } else { alert(data.message); } } catch (error) { alert('조회 실패'); } finally { document.getElementById('loadingOverlay').style.display = 'none'; } }
 
     function drawCalendar(name, year, month, scheduleData) {
       const holidays = ['01-01', '02-16', '02-17', '02-18', '03-01', '03-02', '05-05', '05-24', '05-25', '06-03', '06-06', '08-15', '08-17', '09-24', '09-25', '09-26', '10-03', '10-05', '10-09', '12-25'];
       const standardCodes = ['D4', 'A1', 'A2', 'C1', 'C2', 'B1', 'B2'];
       document.getElementById('calMonthTitle').innerText = `${month}월 스케줄표`;
-      document.getElementById('calWelcomeMsg').innerHTML = `<span style="color:#333; font-size:16px;">${name}</span> 근무표입니다. 항상 감사드립니다.`;
+      document.getElementById('calWelcomeMsg').innerHTML = `${name} 근무표입니다.`;
       let daysInMonth = new Date(year, month, 0).getDate();
       let firstDay = new Date(year, month - 1, 1).getDay();
-      let gridHtml = `
-        <div style="text-align:center; font-size:12px; font-weight:900; color:var(--danger-color); padding-bottom:5px;">일</div>
-        <div style="text-align:center; font-size:12px; font-weight:900; color:#000; padding-bottom:5px;">월</div>
-        <div style="text-align:center; font-size:12px; font-weight:900; color:#000; padding-bottom:5px;">화</div>
-        <div style="text-align:center; font-size:12px; font-weight:900; color:#000; padding-bottom:5px;">수</div>
-        <div style="text-align:center; font-size:12px; font-weight:900; color:#000; padding-bottom:5px;">목</div>
-        <div style="text-align:center; font-size:12px; font-weight:900; color:#000; padding-bottom:5px;">금</div>
-        <div style="text-align:center; font-size:12px; font-weight:900; color:var(--blue-color); padding-bottom:5px;">토</div>
-      `;
+      let gridHtml = `<div style="text-align:center; color:var(--danger-color); font-weight:900;">일</div><div style="text-align:center; font-weight:900;">월</div><div style="text-align:center; font-weight:900;">화</div><div style="text-align:center; font-weight:900;">수</div><div style="text-align:center; font-weight:900;">목</div><div style="text-align:center; font-weight:900;">금</div><div style="text-align:center; color:var(--blue-color); font-weight:900;">토</div>`;
       for (let i = 0; i < firstDay; i++) { gridHtml += `<div class="day-cell" style="background:transparent; border:none;"></div>`; }
       for (let i = 0; i < daysInMonth; i++) {
         let code = scheduleData[i] || ''; let upperCode = code.toUpperCase(); 
-        let dateObj = new Date(year, month - 1, i + 1); let dayOfWeek = dateObj.getDay(); 
-        let dateKey = `${String(month).padStart(2, '0')}-${String(i + 1).padStart(2, '0')}`;
-        let numClass = (dayOfWeek === 0 || holidays.includes(dateKey)) ? 'sun' : (dayOfWeek === 6 ? 'sat' : 'weekday');
-        let colorClass = code !== '' ? (standardCodes.includes(upperCode) ? 'text-blue' : 'text-red') : '';
-        gridHtml += `<div class="day-cell"><div class="day-num ${numClass}">${i + 1}</div><div class="day-code ${colorClass}">${code}</div></div>`;
+        let dObj = new Date(year, month - 1, i + 1); let dOfWeek = dObj.getDay(); 
+        let dKey = `${String(month).padStart(2, '0')}-${String(i + 1).padStart(2, '0')}`;
+        let nCls = (dOfWeek === 0 || holidays.includes(dKey)) ? 'sun' : (dOfWeek === 6 ? 'sat' : 'weekday');
+        let cCls = code !== '' ? (standardCodes.includes(upperCode) ? 'text-blue' : 'text-red') : '';
+        gridHtml += `<div class="day-cell"><div class="day-num ${nCls}">${i + 1}</div><div class="day-code ${cCls}">${code}</div></div>`;
       }
       document.getElementById('calendarGrid').innerHTML = gridHtml;
       document.getElementById('calendarResultArea').style.display = 'block';
     }
 
-    async function saveCalImage() {
-      const captureDiv = document.getElementById('captureArea');
-      const name = document.getElementById('workerNameScan').value.trim();
-      const month = document.getElementById('targetMonth').value.split('.')[1];
-      try {
-        const canvas = await html2canvas(captureDiv, { scale: 2, backgroundColor: '#ffffff' });
-        const link = document.createElement('a'); link.download = `${name}_${month}월_스케줄.png`;
-        link.href = canvas.toDataURL('image/png'); link.click();
-      } catch (e) { alert('사진 저장 실패'); }
-    }
+    async function saveCalImage() { const captureDiv = document.getElementById('captureArea'); const name = document.getElementById('workerNameScan').value.trim(); const month = document.getElementById('targetMonth').value.split('.')[1]; try { const canvas = await html2canvas(captureDiv, { scale: 2, backgroundColor: '#ffffff' }); const link = document.createElement('a'); link.download = `${name}_${month}월_스케줄.png`; link.href = canvas.toDataURL('image/png'); link.click(); } catch (e) { alert('저장 실패'); } }
   </script>
 </body>
 </html>
