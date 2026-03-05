@@ -132,12 +132,12 @@
         </div>
       </div>
 
-      <select class="family-dropdown" onchange="if(this.value) { window.open(this.value, '_blank'); this.selectedIndex=0; }">
+      <select class="family-dropdown" onchange="handleFamilySite(this)">
         <option value="" disabled selected>🌐 패밀리 사이트 바로가기</option>
         <option value="https://severancekr.github.io/EGG-DROP/">애그드랍 앱</option>
-        <option value="https://severancekr.github.io/s/">스케줄배정</option>
         <option value="https://scube.s-tec.co.kr/sso/user/login/view">에스텍S-CUBE</option>
         <option value="https://www.s-tec.co.kr/">에스텍시스템</option>
+        <option value="AUTH_SCHEDULE">스케줄배정</option>
         <option value="#">(임시) 추가 사이트 2</option>
       </select>
     </div>
@@ -324,6 +324,27 @@
     }
 
     async function saveCalImage() { const captureDiv = document.getElementById('captureArea'); const name = document.getElementById('workerNameScan').value.trim(); const month = document.getElementById('targetMonth').value.split('.')[1]; try { const canvas = await html2canvas(captureDiv, { scale: 2, backgroundColor: '#ffffff' }); const link = document.createElement('a'); link.download = `${name}_${month}월_스케줄.png`; link.href = canvas.toDataURL('image/png'); link.click(); } catch (e) { alert('저장 실패'); } }
+
+    // ★ 신규: 패밀리 사이트 선택 시 스케줄배정 비밀번호 체크 함수 ★
+    function handleFamilySite(sel) {
+      const val = sel.value;
+      if (!val) return;
+      
+      if (val === 'AUTH_SCHEDULE') {
+        const pwd = prompt("스케줄배정 접속 비밀번호를 입력하세요.");
+        
+        // ▼▼▼ 실장님! 이곳의 비밀번호(1234)와 원하시는 사이트 링크를 변경해주세요 ▼▼▼
+        if (pwd === "7788") { 
+          window.open("https://severancekr.github.io/s/");
+        } else if (pwd !== null) {
+          alert("비밀번호가 일치하지 않습니다.");
+        }
+      } else if (val !== '#') {
+        window.open(val, '_blank');
+      }
+      
+      setTimeout(() => { sel.selectedIndex = 0; }, 100);
+    }
   </script>
 </body>
 </html>
