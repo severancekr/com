@@ -217,6 +217,25 @@
 
     document.querySelectorAll('.sync-worker').forEach(input => { input.addEventListener('input', function() { document.querySelectorAll('.sync-worker').forEach(el => { el.value = this.value; localStorage.setItem('as_' + el.id, this.value); }); }); });
 
+    // ★ 직접입력 활성화 코드 복구 완료 ★
+    function handleDirectInput(selectId, inputId) { 
+        document.getElementById(selectId).addEventListener('change', function() { 
+            const input = document.getElementById(inputId); 
+            if(this.value === '직접입력') { 
+                input.style.display = 'block'; 
+                input.required = true; 
+            } else { 
+                input.style.display = 'none'; 
+                input.required = false; 
+                input.value = ''; 
+            } 
+        }); 
+    }
+    handleDirectInput('typeSelect', 'customType');
+    handleDirectInput('preventionSelect', 'customPrevention');
+    handleDirectInput('oldCodeSelect4', 'customOldCode4');
+    handleDirectInput('newCodeSelect4', 'customNewCode4');
+
     const handleSingleFile = (fileInputId, dataObj) => new Promise((resolve) => {
         const fi = document.getElementById(fileInputId);
         if (!fi || !fi.files || !fi.files[0]) { resolve(); return; }
